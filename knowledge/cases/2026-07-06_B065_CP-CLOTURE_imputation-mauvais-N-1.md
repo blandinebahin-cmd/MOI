@@ -116,6 +116,7 @@ Décision Blandine : pas de saisie manuelle → import. Seule voie d'import 100 
 - Ligne **`B01 Commissions` = 3.00** en zone brut (brut 6 329.67 = SdB 6 326.67 + 3.00) — valeur **exactement égale** au nombre de jours importé.
 
 **Attendu (voie A, trade-off assumé) : 32 / 3 / 29** (acquis 29+3, pris 3 inchangé, solde 29). **Observé : 35 / 3 / 32 → l'acquis N-1 a pris +6 au lieu de +3** (DÉDUIT : baseline juillet = juin = 29/3/26, le N-1 n'acquiert plus). Un excédent de **+3 j** sur acquis et solde, alors que l'EV de juillet n'en porte que 3.
+**Baseline confirmée (2026-07-07)** : les 3 salariés corrigés manuellement avant l'EH étaient les cas à **10, 8 et 1 j** — le salarié test (3 j) n'en faisait pas partie ; aucun forçage antérieur ne peut expliquer le +3. L'hypothèse « correction manuelle antérieure » est **écartée** ; restent le résidu de saisie sur un autre mois et la double colonne EV (dont la saisie historique via « Ajouter un profil », la voie KB d'origine de `MAJCPN-1`, non pérenne — faite avant le rattachement PCCN01 ?).
 
 **Check discriminant n°1 (à faire en premier)** : bulletin de **juillet** → Éléments calculés → bloc « Jours de congés acquis/pris sur le bulletin » → ligne **Acquis**, colonne **Période de référence (N-1)** :
 - **= 3.0000** → le +3 excédentaire vient d'un **autre bulletin** → contrôler la grille EV de **juin** (colonne `NbjCPN-1` : résidu du test unitaire antérieur ?) et les Élém. calculés de juin (Acquis N-1 forcé ?).
