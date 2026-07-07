@@ -131,6 +131,23 @@ Repères bulletin : `Bul.Periode` (1er jour du mois) · `Bul.Date` (dernier jour
 ## 13. Numérique & conversions
 `Trunc(x)` · `Round(x, 2)` · `ToDouble(s)` · `ToInt(s)` · `ToString(x)`.
 
+## 14 bis. Profil de prime vs fonction calcul (OBSERVÉ, 2026-07-07)
+
+| | Profil de prime | Fonction calcul |
+|---|---|---|
+| Où | `Paramétrage > Primes > Profils` | `Paramétrage > Fonctions calculs` |
+| Exécution | Calcul du bulletin, salarié par salarié, dans la chaîne des primes | Moteur, à des points précis : noms réservés appelés automatiquement (`CP-ANCIENNETE`, `M-MALADIE`, `PROVISIONECRCPT`, `IMPORT*`…) ou injection via `Include` |
+| Colonne EV | ✅ `Saisie("X",0)` ouvre une colonne EV → importable en masse | ❌ pas de colonne EV de masse |
+| Usage type | primes, compteurs, saisies mensuelles | maintiens, INIT/FIN de rubriques, exports compta, imports, personnalisation conventionnelle |
+| Pour tous les salariés | via un conteneur type `PCCN01` (« Ajouter un profil ») | automatique selon nom / point d'accrochage |
+
+**Passes de calcul** : le moteur exécute le bulletin en de multiples passes (`CALCULNORMAL`, `CALCULPRIMES`, `CALCULVIRTUELBRUT`, `CALCULVIRTUELNET`, `DETERMINEPRIMESMAJORATIONHEURESSUP`, `DETERMINEBRUTAPARTIRDUNET`, … — liste complète dans `REF_Langage_Silae_Syntaxes_et_variables.txt`). Un profil qui mouvemente des compteurs **sans garde** `If Bul.Fonction = Fonction.CALCULNORMAL` peut s'exécuter plusieurs fois → double comptage. `AjouteCPPrisRef` / `AjouteCPPrisAnt` / `AffecteCpAcquisRef` ciblent explicitement la période (réf = N-1, ant = N). ⚠ Les écritures de report (`AffecteCPAcquisRef`) **persistent** dans les données du compteur après retrait de la saisie/du profil (observé cas CP-CLOTURE) — purge par contre-saisie négative.
+
+## 14 ter. Divers utiles (OBSERVÉ dans le dump)
+
+- `Call ChangementMoisClotureCP(période_bulletin, ancien_mois, 2)` dans une FC `SALMINCONVPRECALC` : changer le mois de clôture CP en cours d'année.
+- Import XLS des EV : colonnes directes `cpn-1acquis` / `cpn-1pris` / `cpnacquis` / `cpnpris` / `rttacquis` / `rttpris` (point d'entrée à confirmer) ; programmes « à la demande » éditeur (`CORRIGEINITCP`, `IMPORTRECAPPAIE`, …).
+
 ## 14. Objets de données
 Préfixes : `SAL.` (salarié), `EMP.` (emploi/contrat), `BUL.` (bulletin), `ETA.` (établissement), `STE.` (société), `CUM.` / `CumP_` (cumuls), `MtPart.` (montants particuliers).
 → Catalogue détaillé des variables dans **`SILAE_CODE_GLOSSARY.md`**, fonctions dans **`SILAE_FONCTIONS_CALCUL_CATALOGUE.md`**.
