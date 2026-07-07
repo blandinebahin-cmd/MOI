@@ -108,6 +108,28 @@ Décision Blandine : pas de saisie manuelle → import. Seule voie d'import 100 
 - Le « divergent » à 4 j : lignes = PrisRef = 4 ✓ (l'écart de compteur 11 vs 4 est antérieur à juin — vérif détail maintenue).
 - Exemple re-validé en vidéo (cadre B065 entré 04/2023, 3 j pris 11-13/05) : mai = ancien N-1 30/27/**3** (3 j de solde, pris pile avant le 31/05) ; juin = nouveau N-1 29/**3**/26 + Élém. calculés « Pris N-1 = 3.0000 » → correction 3→0, cible 29/0/29, ancien N-1 réellement soldé 30/30. Pattern identique aux autres cas.
 
+## Test import `IMPORTSILAE` + `MAJCPN-1` du 2026-07-07 — ⚠ RÉSULTAT NON CONFORME (+3 j en trop)
+
+**OBSERVÉ (captures écran, salarié test matricule 1003082, entré 03/04/2023 — le cas « 3 j pris 11-13/05 » revalidé en vidéo) :**
+- Mécanique d'import OK : profil `MAJCPN-1` rattaché en **colonne pérenne** via le profil utilisateur `PCCN01` (« Variables ») ✓ ; EV de **juillet 2026** : colonne `NbjCPN-1` = **3.00**, une seule ligne, totaux 3.00, triangle vert ✓.
+- Bulletin de juillet : bandeau **CP N-1 = 35.00 / 3.00 / 32.00** (CP N = 4.17/0/4.17 ✓ = 2 × 2.0833 ; RTT 9/2/7).
+- Ligne **`B01 Commissions` = 3.00** en zone brut (brut 6 329.67 = SdB 6 326.67 + 3.00) — valeur **exactement égale** au nombre de jours importé.
+
+**Attendu (voie A, trade-off assumé) : 32 / 3 / 29** (acquis 29+3, pris 3 inchangé, solde 29). **Observé : 35 / 3 / 32 → l'acquis N-1 a pris +6 au lieu de +3** (DÉDUIT : baseline juillet = juin = 29/3/26, le N-1 n'acquiert plus). Un excédent de **+3 j** sur acquis et solde, alors que l'EV de juillet n'en porte que 3.
+
+**Check discriminant n°1 (à faire en premier)** : bulletin de **juillet** → Éléments calculés → bloc « Jours de congés acquis/pris sur le bulletin » → ligne **Acquis**, colonne **Période de référence (N-1)** :
+- **= 3.0000** → le +3 excédentaire vient d'un **autre bulletin** → contrôler la grille EV de **juin** (colonne `NbjCPN-1` : résidu du test unitaire antérieur ?) et les Élém. calculés de juin (Acquis N-1 forcé ?).
+- **= 6.0000** → le doublement a lieu **sur juillet même** → défiler la grille EV de juillet vers la droite : **deux colonnes `NbjCPN-1`** (une ajoutée jadis via « Ajouter un profil » dans les EV — la voie dont la fiche dit que l'import ne fonctionne pas — plus la colonne pérenne PCCN01) ; sinon profil compté deux fois (remonter à l'assistance).
+
+**Checks complémentaires :**
+- Popup « Compteurs CP » + « Solde de repos » (juillet) : décomposition de l'acquis N-1 — le +3 apparaît-il en double (« Jours acquis N-1 » + « Jours acquis N-1 Report ») ? Provision N-1 gonflée de 2 × 3 j ?
+- Fiche société (point ouvert) : **report auto du solde à la clôture** — un report des 3 j non consommés de l'ancien N-1 au 31/05 expliquerait aussi +3, et changerait **tout le chiffrage de masse** (les salariés n'auraient alors rien perdu). Contre-indice : juin observé = 29/3/26 sans report.
+- **Ligne `B01 Commissions` 3.00** : coïncidence suspecte avec la valeur importée → vérifier la provenance (colonne EV Commissions ? code EV du CSV apparié à deux colonnes ?). Si l'import alimente B01, il y a un **impact en euros dans le brut** — bloquant absolu pour la masse. Si ce sont de vraies commissions de 3.00 €, lever le doute et tracer.
+
+**Décision : import complet (86 lignes) SUSPENDU** tant que l'excédent +3 et la ligne B01 ne sont pas expliqués. La mécanique d'import elle-même est validée (colonne pérenne + CSV + « OUI » fonctionnent).
+**Correction selon cause** : résidu EV sur juin → effacer la saisie de juin (modif compteur sans impact DSN, mais bulletin de juin réédité — mois payé/DSN transmise, décision à tracer) ; doublement structurel du profil → abandonner la voie A, basculer voie B (Élém. calculés) ou voie C (ticket éditeur).
+**Rappel** : même corrigée, la voie A affichera 32/3/29 (trade-off assumé) — l'affichage exact 29/0/29 n'existe qu'en voie B/C.
+
 ## Points ouverts
 - Réglage fiche société : report auto du solde, mois de clôture, option décalage (non visibles dans la vidéo).
 - Confirmation du 10ème par période via la bulle de détail ICP.
@@ -149,3 +171,4 @@ Exemple (salarié test 2, cadre B065, forfait 218 j, anonymisé — bulletins ho
 | Date | Changement | Raison | Auteur |
 |---|---|---|---|
 | 2026-07-07 | Dépôt initial dans `knowledge/cases/` (statut DIAGNOSTIC) | Capitalisation §7 AGENTS.md | Assistant (session Claude) |
+| 2026-07-07 | Ajout section « Test import IMPORTSILAE + MAJCPN-1 » : résultat non conforme (35/3/32 au lieu de 32/3/29, +3 j en trop), import de masse suspendu, checklist de discrimination | Résultat de test observé (captures Blandine) | Assistant (session Claude) |
