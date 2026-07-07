@@ -1,0 +1,24 @@
+PROVISIONECRCPT1
+
+Provisions HS
+
+Begin
+
+// provision HS
+
+Compte6Provision = "6411026"
+Compte4Provision = "4280000"
+Compte6Charges = "6450106"
+Compte4Charges = "4386000"
+
+LibelleProvision = "Provisions HS"
+LibelleExtourne  = "Reprise Provisions HS"
+//PourcentageChargeProvision = TauxChargePatronaleSR(bul.periode)
+
+// PROVISION
+BrutProvision = stockvar("NG.HS")
+
+AvecExtourne = true
+
+
+end

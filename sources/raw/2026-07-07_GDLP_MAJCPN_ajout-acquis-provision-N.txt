@@ -1,0 +1,21 @@
+MAJCPN
+
+begin
+
+NB = saisie("NbjCPN",0)
+Tx = saisie("TxjCPN",0)
+
+
+Prov = BUL.CpProvAcquiseAnt
+Nbcp = BUL.CPNBJACQUISAnt
+If Tx = 0 then
+	Tx = Prov /  Nbcp
+EndIf
+
+
+if NB <> 0.0 then
+	Call AjouteCpAcquisAnt( Nb )
+	call AjouteProvCpAnt  (Nb * (Tx))
+endif
+
+end

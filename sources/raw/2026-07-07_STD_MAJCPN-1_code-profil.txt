@@ -1,0 +1,18 @@
+begin
+
+NB = saisie("NbjCPN-1",0)
+
+Prov = BUL.CpProvAcquiseRef - Bul.CpProvAcquiseRefParReport
+Nbcp = BUL.CPNBJACQUISREF - Bul.CpNbjAcquisRefParRepport
+
+Include("DOMONLY_INIT-MAJCPN-1")
+
+if NB <> 0.0 then
+	//Call AffecteCPAcquisRef ( Nb )
+	Call AffecteCPAcquisRef ( Nb + Bul.CPReportJours)		//Ni 05032026 #137665 - Tenir compte des CP acquis par report lors de l'ajout sur mois suivant mois de cloture
+	call AjouteProvCpRef  (Nb * (Prov / Nbcp))
+endif
+
+Include("DOMONLY_FIN-MAJCPN-1")
+
+end

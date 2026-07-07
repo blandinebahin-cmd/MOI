@@ -1,0 +1,471 @@
+P.FIXE 			Primes fixes - EV reporté en M+1
+
+
+
+Begin
+
+// Primes classées par ordre alphabétique
+
+//////////////////////////////////////////////////////////////////////////////// Avance sur prime prospection ////////////////////////////////////////////////////////////////////////////////
+
+AvancePrimeProspectFixe = SaisieM1("Av.Prospec.fixe")
+
+If AvancePrimeProspectFixe <> 0 then
+	Exec("Lprime_H04.APRO")
+	methodeCalcul = 2
+	Bases = AvancePrimeProspectFixe
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Avance sur prime objectif mensuelle /////////////////////////////////////////////////////////////////////////
+
+AvancePOMensuelle = SaisieM1("Av.PO.Mens")
+
+If AvancePOMensuelle <> 0 then
+	Exec("Lprime_B01.AVPO")
+	methodeCalcul = 2
+	Bases = AvancePOMensuelle
+	Liblong = "Avance sur prime objectif mensuelle"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Avance sur prime objectif PBI - VINDIMA /////////////////////////////////////////////////////////////////////
+
+AvancePOPBI = SaisieM1("Av.PO.PBI")
+
+If AvancePOPBI <> 0 then
+	Exec("Lprime_B01.APBI")
+	methodeCalcul = 2
+	Bases = AvancePOPBI
+	Exec("GenereLprime")
+EndIf
+
+//////////////////////////////////////////////////////////////////////////////// Avance sur prime objectif PPP - VINDIMA ////////////////////////////////////////////////////////////////////
+
+AvancePOPPP = SaisieM1("Av.PO.PPP")
+
+If AvancePOPPP <> 0 then
+	Exec("Lprime_B01.APPP")
+	methodeCalcul = 2
+	Bases = AvancePOPPP
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Avance sur prime suivi client - OMAG ////////////////////////////////////////////////////////////////////////
+
+AvancePSuiviClient = SaisieM1("Av.Suivi.Clt")
+
+If AvancePSuiviClient <> 0 then
+	Exec("Lprime_B01.SUIC")
+	methodeCalcul = 2
+	Bases = AvancePSuiviClient
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime d'Achat ////////////////////////////////////////////////////////////////////////////////////////////////
+
+PAchat = SaisieM1("P.Achat.fixe")
+
+If PAchat <> 0 then
+	Exec("Lprime_H03.ACHA")
+	methodeCalcul = 2
+	Bases = PAchat
+	Liblong = "Prime d'achat"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime d'activitéfixe ////////////////////////////////////////////////////////////////////////////////////////
+
+PActiviteFixe = SaisieM1("P.Activ.fixe")
+
+If PActiviteFixe <> 0 then
+
+	Exec("Lprime_H04")
+	methodeCalcul = 2
+	Bases = PActiviteFixe
+	Liblong = "Prime d'activité"
+	Exec("GenereLprime")
+
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime BF Bulles /////////////////////////////////////////////////////////////////////////////////////////////
+
+PBFBulle = SaisieM1("P.Bulle.fixe")
+
+If PBFBulle <> 0 then
+	Exec("Lprime_H03.BFBU")
+	methodeCalcul = 2
+	Bases = PBFBulle
+	Liblong = "Prime BF bulles"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Chauffeur //////////////////////////////////////////////////////////////////////////////////////////////
+
+PChauffeur = SaisieM1("P.Chauff.fixe")
+
+If PChauffeur <> 0 then
+	Exec("Lprime_D11.CHAU")
+	methodeCalcul = 2
+	Bases = PChauffeur
+	Liblong = "Prime chauffeur"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime collecte - OMAG ///////////////////////////////////////////////////////////////////////////////////////
+
+PCollecteFixe = SaisieM1("P.Collecte.fixe")
+
+If PCollecteFixe <> 0 then
+	Exec("Lprime_H04.COL")
+	methodeCalcul = 2
+	Bases = PCollecteFixe
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Commerciale //////////////////////////////////////////////////////////////////////////////////////////////
+
+PCommerciale = SaisieM1("P.Commerce.fixe")
+
+If PCommerciale <> 0 then
+	Exec("Lprime_B01.CCLE")
+	methodeCalcul = 2
+	Bases = PCommerciale
+	Liblong = "Prime commerciale"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Direction JBF ////////////////////////////////////////////////////////////////////////////////////////////
+
+PDiretionJBF = SaisieM1("P.DJBF.fixe")
+
+If PDiretionJBF <> 0 then
+	Exec("Lprime_D11.DJBF")
+	methodeCalcul = 2
+	Bases = PDiretionJBF
+	Liblong = "Prime Direction JBF"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Fiche Technique //////////////////////////////////////////////////////////////////////////////////////////
+
+PFicheTechnique = SaisieM1("P.FicheT.fixe")
+
+If PFicheTechnique <> 0 then
+	Exec("Lprime_D08.FT")
+	methodeCalcul = 2
+	Bases = PFicheTechnique
+	Liblong = "Prime fiche technique"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime gestion logistique - OMAG ////////////////////////////////////////////////////////////////////////////////
+
+PGestionLogistiqueFixe = SaisieM1("P.GestLog.fixe")
+
+If PGestionLogistiqueFixe <> 0 then
+	Exec("Lprime_H04.LOGI")
+	methodeCalcul = 2
+	Bases = PGestionLogistiqueFixe
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Gestion / Organisation Atelier ///////////////////////////////////////////////////////////////////////////
+
+PGestionOrgaAtelier = SaisieM1("P.GestAt.fixe")
+
+If PGestionOrgaAtelier <> 0 then
+	Exec("Lprime_H04.ATE")
+	methodeCalcul = 2
+	Bases = PGestionOrgaAtelier
+	Liblong = "Prime gestion/organisation atelier"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime sur Investissement ///////////////////////////////////////////////////////////////////////////////////////
+
+PInvestissement = SaisieM1("P.Invest.fixe")
+TopRattachementAnnuelPInvestissement = Saisie("Top.Rattache.Invest",0)
+
+If PInvestissement <> 0 then
+
+	///// Spécifique - Rattachement de la prime sur dates execices comptables pour la prime objectif versée en décembre si EV TopRattachementAnnuel = 1 sinon rattachement au mois en cours
+
+	If TopRattachementAnnuelPInvestissement = 1 then
+
+		///// Rattachement de la prime sur dates execices comptables
+		DateDebAn = date(1,10,bul.annee-1)
+		DateFinAn = date(30,09,bul.annee)
+
+		If MtPart.EXERCICEFISCALSPE = 1 then
+			DateDebAn = date(1,07,bul.annee-1)
+			DateFinAn = date(30,06,bul.annee)
+		Endif
+
+
+		//prise en compte des entrées en cours d'année
+		If emp.dtdeb > DateDebAn Then
+			DateDebAn = emp.dtdeb
+		Endif
+
+		//prise en compte des entrées en cours d'année
+		If bul.sorticemois = true then
+			DateFinAn = emp.dtfin
+		Endif
+	Endif
+
+
+	///// Execution de la prime
+
+	Exec("Lprime_H04.ATE")
+	methodeCalcul = 2
+	Bases = PInvestissement
+	Liblong = "Prime sur investissement"
+
+	If TopRattachementAnnuelPInvestissement = 1 then
+		marquedtdeb = DateDebAn
+		marquedtfin = DateFinAn
+
+		//print "PPrime P.FIXE- Date Début AED Prime investissement fixe : " + DateDebAn
+		//print "PPrime P.FIXE- Date Fin AED Prime investissement fixe : " + DateFinAn
+	Endif
+
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime logistique - CAP CORSE ////////////////////////////////////////////////////////////////////////////////
+
+PLogistiqueFixe = SaisieM1("P.Logis.fixe")
+
+If PLogistiqueFixe <> 0 then
+	Exec("Lprime_H04.LOGI")
+	methodeCalcul = 2
+	Bases = PLogistiqueFixe
+	exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime magasin - RACINE //////////////////////////////////////////////////////////////////////////////////////
+
+PMagasinFixe = SaisieM1("P.Magasin.fixe")
+
+If PMagasinFixe <> 0 then
+	Exec("Lprime_H04.MAG")
+	methodeCalcul = 2
+	Bases = PMagasinFixe
+	exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Non Accident ///////////////////////////////////////////////////////////////////////////////////////////
+
+PNonAccident = SaisieM1("P.NonAT.fixe")
+
+If PNonAccident <> 0 then
+	Exec("Lprime_D11.NACC")
+	methodeCalcul = 2
+	Bases = PNonAccident
+	Liblong = "Prime Non Accident"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime de performance fixe /////////////////////////////////////////////////////////////////////////////////////
+
+PPerformanceFixe = SaisieM1("P.Perf.fixe")
+
+If PPerformanceFixe <> 0 then
+
+	Exec("Lprime_H04.PERF")
+	methodeCalcul = 2
+	Bases = PPerformanceFixe
+	Liblong = "Prime de performance"
+	Exec("GenereLprime")
+
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime objectif fixe mensuelle ////////////////////////////////////////////////////////////////////////////////
+
+PrimeObjectifFixeMensuelle = SaisieM1("P.Obj.fixe")
+
+If PrimeObjectifFixeMensuelle <> 0 then
+
+	Exec("Lprime_B01.PO")
+	methodeCalcul = 2
+	Bases = PrimeObjectifFixeMensuelle
+	Liblong = "Prime objectifs"
+	Exec("GenereLprime")
+
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime objectif fouragères - VINDIMA ///////////////////////////////////////////////////////////////////////////
+
+POFourageres = SaisieM1("PO.Fouragere")
+TopRattachementAnnuelPOFouragere = Saisie("Top.Rattache.POF",0)
+
+If POFourageres <> 0 then
+
+	///// Rattachement de la prime sur dates execices comptables pour la prime objectif versée en décembre si EV TopRattachementAnnuel = 1 sinon rattachement au mois en cours
+
+	If TopRattachementAnnuelPOFouragere = 1 then
+
+		///// Rattachement de la prime sur dates execices comptables
+		DateDebAn = date(1,10,bul.annee-1)
+		DateFinAn = date(30,09,bul.annee)
+
+		If MtPart.EXERCICEFISCALSPE = 1 then
+			DateDebAn = date(1,07,bul.annee-1)
+			DateFinAn = date(30,06,bul.annee)
+		Endif
+
+
+		//prise en compte des entrées en cours d'année
+		If emp.dtdeb > DateDebAn Then
+			DateDebAn = emp.dtdeb
+		Endif
+
+		//prise en compte des entrées en cours d'année
+		If bul.sorticemois = true then
+			DateFinAn = emp.dtfin
+		Endif
+	Endif
+
+
+	///// Execution de la prime
+
+	Exec("Lprime_B01.FOUR")
+	methodeCalcul = 2
+	Bases = POFourageres
+
+	If TopRattachementAnnuelPOFouragere = 1 then
+		marquedtdeb = DateDebAn
+		marquedtfin = DateFinAn
+
+		//print "PPrime P.FIXE- Date Début AED : " + DateDebAn
+		//print "PPrime P.FIXE- Date Fin AED : " + DateFinAn
+	Endif
+
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime objectif semences - PERRET SA //////////////////////////////////////////////////////////////////////
+
+POSemencesFixe = SaisieM1("PO.Sem.fixe")
+
+If POSemencesFixe <> 0 then
+	Exec("Lprime_B01.SEM")
+	methodeCalcul = 2
+	Bases = POSemencesFixe
+	exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Organisation ////////////////////////////////////////////////////////////////////////////////////////
+
+POrganisation = SaisieM1("P.Orga.fixe")
+
+If POrganisation <> 0 then
+	Exec("Lprime_D08.ORGA")
+	methodeCalcul = 2
+	Bases = POrganisation
+	Liblong = "Prime organisation"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Productivité ///////////////////////////////////////////////////////////////////////////////////////
+
+PProductivite = SaisieM1("P.Prod.fixe")
+
+If PProductivite <> 0 then
+	Exec("Lprime_D08.PROD")
+	methodeCalcul = 2
+	Bases = PProductivite
+	Liblong = "Prime productivité"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Qualité fixe ////////////////////////////////////////////////////////////////////////////////////////
+
+PQualiteFixe = SaisieM1("P.Qual.fixe")
+
+If PQualiteFixe <> 0 then
+	Exec("Lprime_D15.QUAL")
+	methodeCalcul = 2
+	Bases = PQualiteFixe
+	Liblong = "Prime qualité"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime de rendement ////////////////////////////////////////////////////////////////////////////////////////
+
+PRendement = SaisieM1("P.Rend.fixe")
+
+If PRendement <> 0 then
+	Exec("Lprime_D09")
+	methodeCalcul = 2
+	Bases = PRendement
+	Liblong = "Prime de rendement"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Repas ///////////////////////////////////////////////////////////////////////////////////////////////
+
+PRepas = SaisieM1("P.Repas.fixe")
+
+If PRepas <> 0 then
+	Exec("Lprime_E01.REP")
+	methodeCalcul = 2
+	Bases = PRepas
+	Liblong = "Prime repas"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime Soutien au CAP ///////////////////////////////////////////////////////////////////////////////////////
+
+PSoutienCAP = SaisieM1("P.SCAP.fixe")
+
+If PSoutienCAP <> 0 then
+	Exec("Lprime_D11.SCAP")
+	methodeCalcul = 2
+	Bases = PSoutienCAP
+	Liblong = "Prime soutien au CAP"
+	Exec("GenereLprime")
+EndIf
+
+
+//////////////////////////////////////////////////////////////////////////////// Prime 13ème mois fixe ///////////////////////////////////////////////////////////////////////////////////////
+
+P13MoisFixe = SaisieM1("P.13M.fixe")
+
+If P13MoisFixe <> 0 then
+	Exec("Lprime_D05")
+	methodeCalcul = 2
+	Bases = P13MoisFixe
+	Liblong = "Prime 13ème mois"
+	Exec("GenereLprime")
+EndIf
+
+End

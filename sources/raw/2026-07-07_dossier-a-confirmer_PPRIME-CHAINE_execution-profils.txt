@@ -1,0 +1,36 @@
+Begin
+
+//A supprimer au démarrage du dossier
+Exec("PPrime_REPRISE_EV")
+Exec("PPrime_XFORCTXPAS")
+
+//Primes haut de bulletin
+Exec("PPrime_PR.POLYVA")
+Exec("PPrime_PR.EXCEPT")
+Exec("PPrime_PR.OBJ")
+Exec("PPrime_PR.ASTREIN")
+Exec("PPrime_PR.HISTO")
+Exec("PPrime_PR.VIECHER")
+Exec("PPrime_PR.ADJOINT")
+Exec("PPrime_PR.SAMEDI")
+Exec("PPrime_PR.COOP")
+Exec("PPrime_PR.ANNIV")
+Exec("PPrime_RAPPEL.SAL")
+Exec("PPrime_RTT.STC")
+
+
+// Primes bas de bulletin
+Exec("PPrime_AV.FRAIS")
+Exec("PPrime_IJPREV")
+
+//Primes standards SILAE
+Exec("PPrime_PPV")
+Exec("PPrime_MAJSDBASE")
+Exec("PPrime_FRAIS")
+Exec("PPrime_PARTVERPEE")
+Exec("PPrime_PARTICVERS")
+
+
+Exec("PostPPrime2_PR.VACANCE")
+Exec("PPrime_TABLEAU_EV")
+End

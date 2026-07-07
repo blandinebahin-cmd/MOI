@@ -6,7 +6,7 @@ Pièces citées par les documents de `knowledge/` mais non encore présentes dan
 
 | Pièce attendue | Emplacement cible | Référencée par |
 |---|---|---|
-| Extrait doc éditeur « Langage SILAE – Syntaxes et variables » | `REF_Langage_Silae_Syntaxes_et_variables.txt` | `knowledge/SILAE_LANGAGE_SYNTAXE.md` |
+| Extrait doc éditeur « Langage SILAE – Syntaxes et variables » — **déposé partiellement le 2026-07-07** (BUL/SAL/EMP/STE/ETA, fonctions, instructions, questionnaire) ; **suite à déposer** (liste des sections manquantes en fin de fichier) | `REF_Langage_Silae_Syntaxes_et_variables.txt` | `knowledge/SILAE_LANGAGE_SYNTAXE.md`, `knowledge/SILAE_CODE_GLOSSARY.md` |
 | Fiches formation EH `1.` à `7.` + listes de fonctions `3.1` (mode Salariés) et `3.2` (mode Bulletins) + decks `[12]` / `MAJ 032020` | `formation/` | `knowledge/SILAE_EDITIONS_HISTORIQUES.md` |
 | KB « Solder et modifier des compteurs de congés / repos » (MAJ 01/07/2026) | `kb/Gestion_courante_paies/Gestion_des_compteurs/33255274312466_*` | `knowledge/SILAE_COMPTEURS_GESTION_MANUELLE.md` |
 | KB « Paramétrer un compteur en jours / heures (CP Sup, RCR, RCO, RCC) » (MAJ 03/07/2026) | `kb/Gestion_courante_paies/Gestion_des_compteurs/17605495651730_*` | `knowledge/SILAE_COMPTEURS_GESTION_MANUELLE.md` |

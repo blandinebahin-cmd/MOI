@@ -1,0 +1,1541 @@
+----------------------------------------------	BUL.	Bulletin
+
+
+	BUL.DATE				Date	Date du Bulletin
+	Bul.PeriodePremierJour
+	Bul.PeriodeDernierJour
+	Bul.periode
+	BUL.NBJMOIS				Int 	Nbre de jours calendaire du Mois en cours
+	BUL.CCN
+	BUL.GCCN
+	BUL.NBJMOIS
+
+
+				Heures Contrat
+
+	BUL.NBHRHEBDOCONTRAT
+	BUL.NBHMNCONTRAT			Double	Heures Normales
+	BUL.NBHMMCONTRAT			Double	Heures majorées
+	BUL.PCTHEURESMAJOREES			Double	Taux de majoration Heures sup du contrat
+				Heures Libres
+	BUL.CODEHL1	BUL.COEFFVHL1	BUL.NBHMHL1	BUL.NATUREHL1	BUL.SOUMISATEPAHL1	BUL.EXCLUDEFILLONHL1	BUL.COEFFVLEGALHL1
+	BUL.CODEHL2	BUL.COEFFVHL2	BUL.NBHMHL2	BUL.NATUREHL2	BUL.SOUMISATEPAHL2	BUL.EXCLUDEFILLONHL2	BUL.COEFFVLEGALHL2
+	BUL.CODEHL3	BUL.COEFFVHL3	BUL.NBHMHL3	BUL.NATUREHL3	BUL.SOUMISATEPAHL3	BUL.EXCLUDEFILLONHL3	BUL.COEFFVLEGALHL3
+
+			Docuble	rr	Double	 	Int		Bool			Bool
+			Valeur Taux	Quantité	Type d'heures
+
+
+
+
+
+	BUL.NBHMCONTRAT
+	BUL.TAUXHORAIRE
+	BUL.TAUXHORAIREHS				Double	Taux horaire pour heures supplémentaires.
+	BUL.TAUXHORAIREABS
+
+	BUL.SALAIREDEBASEHEURESNORMALES
+	BUL.SALAIREDEBASEHEURESMAJOREES
+	BUL.SALAIREDEBASE
+        BUL.NBHMN
+	BUL.NBHMM
+	BUL.NBHM				Int	Nbre d'heures du mois rémunerees heures contrat - Absences
+	BUL.NBHMExoneration			Int	Nbre d'heures remunérées proratisées par le maintien pour les exo
+	Bul.NbhmExoneration2			Int	Meme chose avec les heures Hors contrat en sus
+	BUL.NBHMMTEPA
+
+	BUL.NbjMois                            	Int	Nombre de jours calendaire dans le mois
+	NbJourSemaine("vendredi")  		Int	Nombre de jours indiqué trouvé dans le mois
+	NbJourSemaine("mercredi")
+	NbJourSemaineTravailles("mercredi")
+	NbJoursFeriesTravaillesSaufJoursSemaine("dimanche")
+
+
+	BUL.RttJoursPrisCeMois            	Int	Nombre de jours de RTT pris dans le mois
+	BUL.CpJoursPrisCeMois 		      	Int	Nombre de jours de congés pris dans le mois
+							(subtilité quand au fait qu'ils soient rémunérés, on en parle lundi)
+
+
+
+	BUL.PREMIERDUMOIS			Bool	Retourne True si on est sur le 1er bulletin du mois
+	BUL.ENTRECEMOIS				Bool  	Vrai si le salarie est entré ce mois
+	BUL.BrutAvantRS				Double	Brut Avant réintrégation sociale
+
+
+	BUL.NBHABSENCESPHYSIQUES			Nbre h absences physiques en heures de travail
+	BUL.NBHABSENCES
+	BUL.NBHABSENCESPHYSIQUES
+	BUL.NBHABSENCESPHYSIQUESMOISANTERIEURS
+	BUL.NBHABSENCESPHYSIQUESHORSCP
+	BUL.NBHABSENCESPHYSIQUESMOISANTERIEURSHORSCP
+
+				Nbre D'heures d'absences ?????
+
+	BUL.PREMIERJOURANNEE			Date	1er jour de l'annee en fonction paie decalee ou pas 0101aa ou 0112aa
+	Bul.jours30				Double	nb de jours de proratisation du plafond en 1/30eme en fonction des E/S
+							et du temps partiel attention ca peut falloir 31
+
+
+
+	HMNombre()
+	HMINDICEHS()				Indice debut es heures hors contrat
+	HMNbh(ii)	HMCoeffV(ii)	HMNature(ii)	HMSoumisATepa(ii)	HMExcluDeFillon(ii)	HMnbhContrat(ii)	HMNbHCHS ( ii )
+	Double		Double		Int		Bool			Bool			double			Double
+	Quantité	Coeff		0  = Complementaire									Détail heures supplémentaires/complémentaires de la ligne de détail
+					10 = supplémentaire
+					20 = Equivalence
+					30 = Non effective
+					40 = normales
+
+
+
+
+
+
+	ii = 0
+	do
+		ii = ii + 1
+		if ii > HMNombre() then exit   // <---- ATTENTION : C'EST UN APPEL DE FONCTION
+		print HMNbh(ii) + ", " + HMCoeffV(ii) + ", " + HMNature(ii) + ", " + HMSoumisATepa(ii) + ", " + HMExcluDeFillon(ii)
+	loop
+
+
+
+
+
+	Meme Tableau en cumuls annuels
+	Cum.SalaireDeBase 	Bul.SalaireDeBase
+	Cum.TauxHoraire 	Bul.TauxHoraire
+	Cum.MtAbsences 		Bul.MtAbsences
+	Cum.Maintien 		Bul.Maintien
+	Cum.IJSS 		Bul.IJSS
+	Cum.AjustementDuNet	Bul.AjustementDuNet
+	Cum.Brut 		Bul.Brut
+	Cum.BrutAL 		Bul.BrutAL
+	Cum.GainNonSoumisFillon Bul.GainNonSoumisFillon
+	Cum.BrutAvantRS		Bul.BrutAvantRS
+	cum.pertecp 		bul.pertecp
+	cum.indemnitescp	bul.indemnitescp
+
+
+print HMNombre()
+
+ii = 0
+do
+ii = ii + 1
+if ii > HMNombre() then exit
+print ii + " : " + HMCode(ii) + ", " + HMCoeffV(ii) + ", " + HMCoeffVLegal(ii) + ", " + HMCoeffT(ii) + ", " + HMNature(ii) + ", " + HMSoumisATepa(ii) + ", " + HMExcluDeFillon(ii) + ", " + HMNbH(ii) + ", " + HMNbHContrat(ii) + ", " + HMNbHCHS(ii)
+loop
+
+print HANombre()
+
+ii = 0
+do
+	ii = ii + 1
+	if ii > HANombre() then exit
+	print ii + " : " + HACode(ii) + ", " + HACoeffV(ii) + ", " + HACoeffVLegal(ii) + ", " + HACoeffT(ii) + ", " + HANature(ii) + ", " + HASoumisATepa(ii) + ", " + HAExcluDeFillon(ii) + ", " + HANbH(ii) + ", " + HANbHContrat(ii) + ", " + HANbHCHS(ii)
+loop
+
+
+
+
+// Rappel : on disposait déjà des variables suivantes :
+
+print "Cum.SalaireDeBase=" + Cum.SalaireDeBase
+print "Cum.TauxHoraire=" + Cum.TauxHoraire
+print "Cum.Brut=" + Cum.Brut
+print "Cum.Brutal=" + Cum.Brutal
+print "Cum.BrutAvantRs=" + Cum.BrutAvantRs
+print "Cum.MtAbsences=" + Cum.MtAbsences
+print "Cum.Maintien=" + Cum.Maintien
+print "Cum.Ijss=" + Cum.Ijss
+print "Cum.AjustementDuNet=" + Cum.AjustementDuNet
+print "Cum.GainNonSoumisFillon=" + Cum.GainNonSoumisFillon
+print "Cum.PerteCp=" + Cum.PerteCp
+print "Cum.IndemnitesCp=" + Cum.IndemnitesCp
+print CumP_PSS()
+
+
+
+
+
+
+
+// Nouvelles fonctions :
+
+call CumP_FixePeriode ( date(1,5,2011), date(0,0,0) ) // Fixe la période pour les fonctions qui suivent
+
+print "CumP_SalaireDeBase()=" + CumP_SalaireDeBase()
+print "CumP_TauxHoraire()=" + CumP_TauxHoraire()
+print "CumP_Brut()=" + CumP_Brut()
+print "CumP_Brutal()=" + CumP_Brutal()
+print "CumP_BrutAvantRs()=" + CumP_BrutAvantRs()
+print "CumP_MtAbsences()=" + CumP_MtAbsences()
+print "CumP_Maintien()=" + CumP_Maintien()
+print "CumP_Ijss()=" + CumP_Ijss()
+print "CumP_AjustementDuNet()=" + CumP_AjustementDuNet()
+print "CumP_GainNonSoumisFillon()=" + CumP_GainNonSoumisFillon()
+print "CumP_PerteCp()=" + CumP_PerteCp()
+print "CumP_IndemnitesCp()=" + CumP_IndemnitesCp()
+print 	CumP_RS()
+print "Cum.NbhMNContrat=" + Cum.NbhMNContrat
+print "Cum.NbhMN=" + Cum.NbhMN
+print 	CumP_NbHMM()
+print CumP_CumulRetenuesSD()
+print CumP_CumulRetenuesSND()
+print CumP_CumulRetenuesP()
+
+CUMP_NBHR()
+call CumP_FixePeriode ( date(1,5,2011), date(0,0,0) )        // Par exemple...
+
+print "CumP_NbhMNContrat()=" + CumP_NbhMNContrat()
+print "CumP_NbhMN()=" + CumP_NbhMN()
+print CumP_BrutFillon()
+print Cump_BrutFillonSAbs()
+
+
+call CumP_FixePeriode ( date(1,1,2012),bul.periode)
+
+print CumP_CpJoursAcquis()
+print CumP_CpJoursAcquisEpsilon()
+print CumP_CpJoursAcquisAnciennete()
+print CumP_CpJoursAcquisFractionnement()
+print CumP_CpJoursAcquisReport()
+
+ CumP_FJNbjAn()
+ CumP_SmicH()
+CumP_FJNbj()
+Call Cump_FixePeriode(date(1,4,2013),date(1,4,2013))
+print Cump_RsAgircArrco()
+permet de récupérer les 58.07 du mois précédent
+
+Nouvelle fonction double CumP_StockVar(string), permettant de récupérer le stockvar ou un cumul de stockvar.
+
+
+
+Call CUMP_NOMBREBULLETINS()		vous dit combien il y a de bulletins dans le CumP
+Call CUMP_FIXEINDICEBULLETIN(i)		vous permet de vous restreindre à un bulletin (de 1 à n) parmi le premier
+
+
+
+
+// Les fonctions en HA* suivent désormais la plage déterminée par CumP_FixePeriode(d1,d2) :
+
+print "HANombre()=" + HANombre()
+ii = 0
+do
+ii = ii + 1
+if ii > HANombre() then exit
+print ii + ", " + HACode(ii) + ", " + HANbH(ii) + ", " + HANbhContrat(ii) + ", " + HANbHCHS(ii) + ", " + HACoeffV(ii) + ", " + HACoeffVLegal(ii) + ", " + HACoeffT(ii) + ", " + HANature(ii) + ", " + HASoumisATepa(ii) + ", " + HAExcluDeFillon(ii)
+loop
+
+
+call CumP_RazPeriode() // Annule la plage => on est sensé retrouver les mêmes chiffres que les variables CUM.*
+
+
+Exemple
+
+
+ if ii >= HMINDICEHS() then
+        taux = Bul.TauxhoraireHS
+ else
+  taux = bul.tauxhoraire
+ endif
+
+ If HMSoumisaTepa (ii) = True Then
+
+  GainHcHsTepaBrut = GainHcHsTepaBrut + Round ( HMNbh (ii) * Coeff * Taux , 2 )
+
+ Else
+  If HMNature (ii) = 0 Or HMNature (ii) = 10 Then
+   GainHcHsNsTepa = GainHcHsNsTepa + Round ( HMNbh (ii) * Coeff * Taux , 2 )
+  EndIf
+ EndIf
+
+
+
+
+
+	BUL.NbHDimanches			Double	Nbre d'heures de dimanche  (si on utilise une grille horaire)
+	BUL.NbHFeries				Double	Nbre d'heures de jours Fériés  (si on utilise une grille horaire)
+	BUL.NbHNuits				Double	Nbre d'heures de nuits	(si on utilise une grille horaire)
+							Variables utilisables avec la fonction saisie + initialisation
+
+	Bul.NbHNuitsContratHebdo 			: le nombre d’heures de nuits hebdomadaires fixées dans le contrat
+	Bul.NbHNuitsInitial				: le nombre d’heures de nuits mensuelles en tenant comptes de l’E/S, mais pas de ses absences
+
+	Bul.NbHAbsencesNuitsHorsRepos			Bul.NbHAbsencesNuitsHorsRepos
+
+	BUL.GAINHCHSTEPABrut			Double	Gain HCompl Hsup soumis TEPA brut calcul
+	BUL.GAINHCHSTEPA
+	BUL.GAINHCHSNSTEPA			Double	Gain Hcompl Hsup non soumis TEPA
+	BUL.GAINHCHSTEPANONIMP
+	bul.NbHMmTepaNonImp
+
+	BUL.NBHMMTEPA
+	BUL.NBHMMTEPANONIMP
+	BUL.NBHMMTEPA0812
+
+	Bul.GainHcHsTepa
+	Bul.GainHcHsTepaNonImp
+	Bul.GainHcHsTepa0812
+
+
+	BUL.NBHS
+
+	BUL.NBHS1				Double 	Nbre d'heures sup au taux 1 25%
+	BUL.NBHS2					taux 2 	50%
+	BUL.NBHS3					Taux 3	100%
+	BUL.NBHS4
+	BUL.NBHS5
+
+	BUL.NBHREELLESNORMALES
+	BUL.NBHREELLESMAJOREES
+	BUL.NBHREELLESL1
+	BUL.NBHREELLESL2
+	BUL.NBHREELLESL3
+
+	BUL.NBHCHS
+	BUL.BRUT
+	BUL.BRUTANL
+	BUL.BRUTAL
+	BUL.BRUTPROGRESSIF			Double	Brut progressif valeur du brut a l'endroit ou l'on met une prime
+							en cours de zone 2 SdB - Absence + Hsup + les primes au dessus
+	BUL.BrutETP				Double	Brut equivalent Temps plein brut theorique si le salarie est a plein temps
+							sert lors du calcul des retraites plein temps sur des temps partiel
+
+
+        BUL.ABAT
+	BUL.AMC
+	BUL.PCTABAT
+	BUL.PSS
+	BUL.TRA
+	BUL.TR2
+	BUL.TRB
+	BUL.TRC
+	BUL.BASEGMP
+	BUL.MOIS
+	BUL.ANNEE				Int	Année de la paie
+	BUL.SORTICEMOIS				Bool	Flag indiquant si le salarié est sorti en cours de mois
+	BUL.ANNEEDADSU
+	BUL.SMICH
+	BUL.SALMINCONV
+	BUL.SALMINCONVH
+	BUL.SALMINCONVM
+	BUL.GarminconvAn
+	bul.bap 				Double 	Venant de la classification metier et de salminconv
+							bareme d'assiette de prime utilisee pour le calcul de certaines primes
+
+
+	BUL.BASE8
+	BUL.BASECSG
+	BUL.BASECSGTAUXREDUIT			Double	Base CSG taux reduit exemple base sur intemperies
+	BUL.BASEFS
+
+	BUL.SOMCOTISSALTEPA
+	BUL.JOURSCPFRAC				Int	Nbre de jours de conges payés pris dans la période de fractionnement
+							Nbre en jours ouvrés ou ouvrables selon le paramétrage du dossier
+
+	BUL.GAINNONSOUMISFILLON			Double	Montant des primes a exclure de la loi Fillon
+
+	BUL.TRESTO 					Indique si le salarie a des Tickets Restaurant
+							0 Indique que le salarié n'a pas de Tickets Restaurant
+							1 Nbre de Ticket pour le salarie = nbre automatique
+							2 Saisie manuelle
+							3 saisie par un saisieM1
+
+
+	BUL.NBTICKETSRESTO			Int	Nombre tickets restautant a donner au salarie en fonction de sa
+							grille horaire
+
+	BUL.BRUTSOUMISPRECARITE 		Double	Valeur du brut soumis a précarité pour calcul la précarité mensuellement
+							Valeur doit etre dans la bases
+	BUL.BRUTSOUMISCP 			Double	Valeur du brut Soumis CP pour calcul Indemnité de CP mensuelllement
+							Valeur doit etre dans la bases
+
+	BUL.CPNBJACQUISREF			Double	Nbre de jours de CP Acquis sur la période de référence
+	BUL.CPNBJPRISREF			Double	Nbre de jours de CP Pris sur la période de référence
+	BUL.CPNBJACQUISANT			Double 	Nbre de jours de CP acquis sur la periode en cours
+	Bul.CpNbjAcquisRefParRepport
+	bul.RTTJoursAReporterAcquis
+	Bul.RTTJoursAReporterPris
+
+	BUL.NBJTravailles			Int	Nbre de jours ouvrés du mois pour le salarié
+	BUL.NBJTRAVAILLESTHEORIQUE		Int	Nbre de jours Théoriques de Travail pour le salarié dans le mois
+
+	BUL.NBPANIERS				Int 	Nbre de Paniers du salaries meme chose que NbjTravailles en prenant en compte les
+							regul d'absence sur les mois précédents
+	Bul.NbPaniersNuits
+	Bul.nbjabsences				Int 	Nbre de jours d'absences
+
+
+	BUL.CPDTDEBREF				Date début de la période de référence pour les CP
+	BUL.CPDTFINREF				Date fin de la période de référence pour les CP
+
+	BUL.CPDTDEBANT				Date début de la période anticipée pour les CP periode en cours d'acquisition
+	BUL.CPDTFINANT				Date fin de la période anticipée pour les CP période en cours d'acquisition
+
+	BUL.FORFAPPREN				Montant du forfait Apprenti pour cotisation
+
+	bul.hstepasmic				Valeur du smic * parles heures sup soumises a TEPA plancher de la cotis SS013
+
+	BUL.MAINTIEN				Double	Valeur du maintien de salaire pratique sur le bulletin necessaire pour reduction
+							Fillon
+
+	BUL.BRUTEC				Double	Brut equivalent Contrat salaire théorique sans les absences (reduction Fillon)
+
+
+	BUL.S41.G01.00.013			str	Variable indiquant si le salarie est forfait jour = 10 - code caractéristique activité
+
+	BUL.FJNBJAN				Double 	Nb de jours du forfait jour annuel
+	bul.FJNbJAnContientJS			Bool 	Avec ou ssans journee solidarite
+	BUL.NAPAvantAcomptes			Double 	NAP avant acompte servant de reference au calcul des saisies arret
+
+	BUL.PREMIERDUMOIS			Bool	True False si on est ou pas sur le premier bulletin du mois pour certaines fonction de calcul sur le pss
+
+	Bul.NbjCalendairesAbsencesDif		Int	 Nb de jours d'absences au sens du DIF
+
+	Bul.NbjCalendairesAbsences		Int	Nb de jours calendaitres d'absences toutes absences confondues du mois en cours
+	Bul.NbjCalendairesAbsencesHorsCp
+	Bul.NbjAbsencesHorsCP			Int	Nb de jours d'absnce hors CP
+	Bul.NbjCalendairesAbsencesHorsCpEtRtt	Int
+
+	BUL.NBJDABSENCESHORSCP
+
+	Bul.NetImposable			Double	Valeur du montant Net Imposable du bulletin
+
+	BUL.MTABSENCES					Le montant des absences
+	BUL.MAINTIEN					Le montant du maintien
+	BUL.IJSS					Le montant de l’IJSS brute
+	BUL.AJUSTEMENTDUNET				Le montant de l’ajustement du net
+
+
+
+	BUL.CpProvAcquiseRef				CPN-1
+	BUL.CpProvAcquiseRef				CPN-1
+	BUL.CpProvConsoRef				CPN-1
+	BUL.CpProvConsoRef				CPN-1
+	BUL.CpProvAcquiseAnt				CPN (Ant = anticipé)
+	BUL.CpProvAcquiseAnt				CPN (Ant = anticipé)
+	BUL.CpProvConsoAnt				CPN (Ant = anticipé)
+	BUL.CpProvConsoAnt				CPN (Ant = anticipé)
+	Bul.CpProvAcquiseRefParReport 			CPN-2
+	Bul.CpProvAcquiseRefParAncFrac
+
+
+	bul.basecsgdesprimes			Double 	Total des primes soumise a CSG
+
+	Bul.FinContratCeMois (bool)
+
+	Bul.NbhmContrat				double	Nbr heures mensuelles contrat
+
+	Bul.BrutalAvantRs
+	Bul.TraAvantRs
+	Bul.Tr2AvantRs
+	Bul.TrbAvantRs
+	Bul.TrcAvantRs
+
+	BUL.BRUTANL
+	BUL.BRUTAL
+	BUL.BRUTALNAA			BRUTAL sans RS issue de Agirc Arrco
+	BUL.BRUTALAVANTRS
+
+	BUL.TRA
+	BUL.TRANAA
+	BUL.TRAAVANTRS
+
+	BUL.TR2
+	BUL.TR2NAA
+	BUL.TR2AVANTRS
+
+	BUL.TRB
+	BUL.TRBNAA
+	BUL.TRBAVANTRS
+
+	BUL.TRC
+	BUL.TRCNAA
+	BUL.TRCAVANTRS
+
+	Bul.PeriodeDebutCumuls			Date	permet de demarrer la recherche des cumuls
+
+	Bul.BrutFillon				Double	Brut sans les primes qui ne bougent pas qd on enleve les absences
+	Bul.BrutFillonSAbs			Double 	Meme brut sans les absences
+							Brut que le salarie aurait eu sans les absences
+
+
+	Bul.SiTotal				Double	Total des Sommes Isolées du bulletin
+	bul.SiTrANAA					Part de	TrA avec origine Somme isolée
+	bul.SiTr2NAA						Tr2
+	bul.SiTrBNAA						TrB
+	bul.SiTrCNAA						TrC
+
+
+	BUL.RSFORCEE
+	BUL.RSGRS
+	BUL.RSRPORPS
+	BUL.RSAGIRCARRCO
+
+	Bul.NbSemainesPleinesTheoriques			indique le nombre de semaines pleines théoriques
+							(présent dans la société d’un lundi à son dimanche)
+	Bul.PresentToutLeMois			Bool
+
+	BUL.S41.G01.00.026			Str	Valeur du Code risque du salarie
+	BUL.CUMULPRIMESVERIFAMC
+	Bul.NbjCalendairesAbsencesHorsCp
+	Bul.NbSemainesEntameesTheoriques		pour avantages en bnature logement
+
+	Bul.PostEmploi				bool vrai si bulletin post emploi
+
+	Bul.GainLieAuxAbsences
+	call CumP_FixePeriode(date(1,1,2012),date(1,1,2012))
+	print CumP_GainLieAuxAbsences()
+
+
+	x = bul.basecsgcotisations
+	call AffecteBaseCsgCotisations ( x + 100 )
+
+	print Bul.CpNbjAcquisRefParRepport
+	print Bul.CpProvAcquiseRefParReport
+
+	print Bul.CumulPrimesNonSoumisesACotisCH
+
+	Bul.CpHeuresPrisesCeMois
+
+
+	Sal.CDDDureeInitiale
+
+
+-----------------------------------------------	SAL	SALARIES
+
+	SAL.AGE					Int	Age du Salarie Bascule de l'age le mois du jour Anniversaire
+	Sal.AgeM1				Int	Age du salarié bascule de l'age le mois suivant la date anniversaire
+	SAL.S30.G10.05.001			Str	Numero de matricule du salarie
+	SAL.S41.G01.00.012.001			Str	Type de contrat cdd ou cdi
+	SAL.S41.G01.00.014			Str	Code statut professionnel
+	SAL.S41.G01.00.015.001			Str	Statut Categoriel
+	SAL.S41.G01.00.015.002			Str	Statut Agirc Arrco
+	SAL.S41.G01.00.018.002			Str	Code régime obligatoire risque maladie
+	SAL.S41.G01.00.018.006			Str	Flag Alsace Moselle
+	SAL.AlMosCommisCom 			bool	vrai si commis commercial
+	SAL.SOUMISCOTISCHOMAGE			Bool
+
+	Sal.presencegrillehoraire		Bool	Indique si le salarie est affecté à une grille horaire
+
+	Sal.CodeCpnDuc				Str	Code CPN DUC permet de remplir les codeducs dans les lignes de bulletin
+
+
+						Table des variables salariés indice de 1 à 5 (questionnaire salarié)
+	SAL.BOOL[]				Bool
+	SAL.INT[]				Int
+	SAL.DATE[]				Date
+	SAL.DOUBLE[]				Double
+
+	SAL.DateFinPeriodeEssai2		Date	if SAL.DateFinPeriodeEssai2 < BUL.DATE then Maintien = true
+
+	SAL.NBPERSACHARGE			Int	Nombre de personnes a charge pour calcul des saisie arrets
+	Sal.frontalier				Bool 	True si le salarie est Frontalier
+
+	SAL.S41.G01.01.001			Str	code autre régime de retraite (blanc si non renseigné = valeur par défaut)
+	SAL.ESFREQUENTES			Bool 	Flag gestion des e/s fréquentes
+
+
+	Sal.DateEntree
+
+	Emp.ContratPartCoeffExo			Double	Coefficient du contrat particulier 25
+
+	Sal.Adresse.CodePostal			Str	Code postal du salarié
+
+						---------------------------------------------
+
+
+	EMP.DTFINPERIODEPROBATOIRE		Date	Fin de période probatoire
+	EMP.DTDEB				Date
+	EMP.DTFIN				Date
+	EMP.ANCIENNETE				Int	Anciennete en Mois
+	EMP.ANCIENNETE0101			Int	anciennete au 1er janvier de l'annee en cours
+	EMP.DTDEBANC				Date	Date debut ancienneté si renseignée, sinon vaut EMP.DTDEB
+
+	EMP.CLASSIFICATION			Str
+				N'existe plus EMP.TITRETRS				Double	Montant des titres Transport a rembourser montant complet en prendre 50%
+	Emp.TitreTrsCode
+	Emp.TitreTrsLibelle
+	Emp.TitreTrsPctRemb
+
+	Emp.AutresTitresTrs
+	Emp.AutresTitresTrsPctRemb
+
+
+	EMP.VTRSINACTIF				Bool	Flag true si salarie a exclure du versement Transport
+	EMP.AFFILIECCPINACTIF			Bool	Flag True si Salarie a exclure de la caisse CPayes
+
+
+							Questionnaire conventionnel
+	EMP.CCNBOOL[]				Bool
+	EMP.CCNINT[]				Int
+	EMP.CCNDOUBLE[]				Double
+	EMP.CCNDATE[]				Date
+
+	EMP.AVNVLIBELLE				Str	Avantage en Nature Voiture Libelle allant sur la ligne de bulletin
+	EMP.AVNVMONTANT				Double	Avantage en Nature Voiture  Montant Déduit en pied de bulletin
+
+	EMP.AVNLLIBELLE				Str	Avantage en Nature Logement Libelle allant sur la ligne de bulletin
+	EMP.AVNLMONTANT				Double	Avantage en Nature Logement  Montant Déduit en pied de bulletin
+
+	EMP.AVNILIBELLE				Str	Avantage en Nature NTIC Libelle allant sur la ligne de bulletin
+	EMP.AVNIMONTANT				Double	Avantage en Nature NTIC  Montant Déduit en pied de bulletin
+
+	Emp.AvnNLibelle				Str	Avantage en nature Nourriture Libelle
+	Emp.AvnNMontant				Double	Valeur de l'avantage en nature Nourriture
+
+	EMP.AVNALIBELLE				Str	Avantage en Nature Autres Libelle allant sur la ligne de bulletin
+	EMP.AVNAMONTANT				Double	Avantage en Nature Autres  Montant Déduit en pied de bulletin
+
+	EMP.PRELFIXE1LIBELLE			Str	Prelevement en pied de bulletin 	Libelle
+	EMP.PRELFIXE1DTDEB			Date						Date de but d'application
+	EMP.PRELFIXE1DTFIN			Date						Date de fin application
+	EMP.PRELFIXE1MONTANT			Double						Valeur de la retenue
+
+	EMP.PRELFIXE2LIBELLE			Str
+	EMP.PRELFIXE2DTDEB			Date
+	EMP.PRELFIXE2DTFIN			Date
+	EMP.PRELFIXE2MONTANT			Double
+
+	EMP.PRELFIXE3LIBELLE			Str
+	EMP.PRELFIXE3DTDEB			Date
+	EMP.PRELFIXE3DTFIN			Date
+	EMP.PRELFIXE3MONTANT			Double
+
+	emp.contratpartdtdeb			Date	information ds contrat particulier Apprentis
+	emp.contratpartdtfin			Date
+	emp.contratpartdtsignature		Date
+	emp.anneeetude				Int	Anne d'etude pour les apprentis
+	emp.dtdeb				Date	Date début d'emploi
+	emp.dtfin				Date	Date fin d'emploi
+
+	EMP.COEFF1				Str	Acces aux zones coefficient de la classification metier
+	EMP.COEFF2
+	EMP.COEFF3
+	EMP.COEFF4
+	Emp.NONSOUMISTEPA			Bool	Flag indique si le salarie n'a pas droit a la loi TEPA
+
+	EMP.COTISRETRAITETPSPLEIN		Bool  	Flag indiquant que le salarie cotise a la retraite sur un brut plein temps etant a
+							temps partiel BUL.BrutETP
+
+
+	EMP.TYPECONTRATPART				Type de contrat particulier
+
+
+			NEANT 				= 	10
+			PROFESSIONNALISATION 		= 	20
+			ORIENTATION 			= 	30
+			QUALIFICATION 			= 	40
+			ADAPTATION 			= 	50
+			CONTRATJEUNESENENTREPRISE 	= 	60
+			CIE 				= 	70
+			AUTRE 				= 	250
+
+
+	Emp.ApprentisMajoration15		Bool	Majoration de 15% pour apprentis
+
+
+	Emp.IKActives 				booléen
+	Emp.IKTypeVehicule 				0=non défini,
+							de 3 à 13 : automobile et la valeur définit le nombre de chevaux,
+							de 101 à 104 les 4 types de motos
+	Emp.IKTrancheKm 				0=non définie, sinon 1, 2 ou 3 selon la tranche choisie
+	Emp.IKPrixKm 				double
+	Emp.IKRegul12 				booléen
+
+	Emp.IkMethodeCalcul				0=vide
+							10=prix salarié
+							20=prix société
+							30=prix par type de véhicule
+
+
+
+
+	Emp.SalaireNetGaranti			Double	Montant du salaire net garanti
+
+	Emp.avnl2libelle			Str	Libelle a editer sur bulletin si Avn logement
+	Emp.avnl2nbpieces			Int	Pour calcul automatique de l'an logement
+
+	Emp.CasParticulier 			Str	Variable indiquant les cas particuliers
+
+	Emp.ApprentiPCentMini			double	Valeur du % mini de remuneration des apprentis valables pour les apprentis
+							ayant deja effectue un cursus precedent
+
+	Emp.ModeCalculBaseCPSurCCP
+		0 = mode direct (valeur par défaut)
+		1 = mode déclaratif au réel
+		2 = mode déclaratif sur bases majorées
+		EMP.MODECALCULBASECPSURCCP vaut désormais 1 quand la valeur interne vaut 0
+
+	EMP.MODECALCULBASECPSURCCPORIGINE permet de retrouver la valeur d’origine
+
+
+	Emp.S41.G01.00.004.001	 			motif de rupture
+	EMP.CPMOISCLOTURE			Int	Mois de cloture Cp
+
+	Emp.PctAbatCotisUrssafUniquement	bool
+
+
+
+------------------------------------------------
+
+
+	ARR.Duree				Int 	Durée en jours de l'arret de travail
+
+
+	ABS.DtDeb					Absence date debut de l'abs
+	ABS.DtFin
+	ABS.Duree
+	ARR.Duree pour conserver le passé, vaut ABS.Duree
+
+	// Pour définir une plage de maintien
+	Plage = DateADateAbsence
+//	Plage = DateADate
+	Plage_DateDebut = date(12,3,2020)
+	Plage_DateFin = DateFinUrgence
+
+	// Pour faire un maintien a chaque arret
+	Plage = Absence
+//
+
+
+
+-----------------------------------------------	STE
+	STE.Syndicat
+	STE.PAIEDECALEE
+	STE.AFFILIECCP				Bool	Flag indiquant si la Ste est affiliée a une caisse de conges payes
+	STE.TAXE8
+	STE.REDUCTIONFILLON19
+	STE.DEDUCTIONTEPA20
+	STE.FNALSUP				Bool	True si la ste cotise
+	STE.FNALSUPPCTABAT
+	STE.EFFORTCONSTRUCTION
+	STE.EFFORTCONSTRUCTIONPCTABAT
+	STE.FORMATIONPROFESSIONNELLE		Int 	resultat du choix formation professionnelle
+	STE.FORMATIONPROFESSIONNELLEANNEE1	Int	Annee 1
+	STE.FORMATIONPROFESSIONNELLEANNEE2	Int 	Annee 2
+	STE.BASECALCULANCIENNETE
+
+	STE.METHODESUIVICP			Int	Methode de suivi des CPayes	1 = jours ouvrables
+											2 = jours ouvrés
+											3 = jours ouvrés du salarié
+
+
+	STE.FORCEAPPLIEXT			bool	Vrai si la case est cochée sur la CCN Adherent a un syndicat
+
+
+	Ste.TaxeApprentissagePayeeCCP
+	STE.SUBROGATION
+	Ste.FormeJuridique
+	Ste.MethodeRegulFillon			Int	1= régul en décembre
+							2=régul chaque mois
+	 						pour tous les dossiers existants, retourne 1
+	Ste.MethodeDeductionHM			Int
+		0 = au jour le jour
+		1 = à la semaine
+
+
+	Emp.DeductionCpInactive			bool
+
+-----------------------------------------------	ETA	Etablissement
+
+	ETA.DUREEHEBDO
+	ETA.VTRSCODEREGION			Str	Code Région Transport pour Versement Transport
+	ETA.VTRSTAUX				Double	Taux de cotis Versement Transport
+
+	ETA.SOUMISTAXEAPPR
+	ETA.SOUMISTAXEAPPRAVECMAJORATION
+	ETA.SOUMISTAXESALAIRES
+	ETA.SOUMISTAXESALAIRESPCTIMP
+
+	ETA.TRESTO				Bool	Indique le mode de gestion défini dans l'établissement (true/false)
+	ETA.TRESTOPARTSALARIALE			Double	Valeur de la part salariale du ticket resto
+
+	ETA.TRESTONOMVARIABLE			Str	Indique le nom de la variable définie dans l'établissement
+							qui sert pour connaitre la valeur du ticket resto Mtpart
+							MTPART.TRESTO
+	ETA.CDDPAIMENSINDPRECARITE		Bool	Flag Indiquant si pour les CDD la précarité est payée chaque mois
+	ETA.CDDPAIMENSINDCP			Bool	Flag indiquant si pour les CDD les CP sont payées chaque mois
+
+	Eta.codepays				Str	Code du pays
+	ETA.CODEREGION				Str	Retourne le code Insee de la region ou se trouve l'etablissement
+	Eta.departement				Str	Code du departement de l'Ets Longueur 2 Sauf si le code commence par 97
+							dans ce cas le troisieme caractere donne le lieu
+
+	ETA.CodeNAF				Str	Valeur du code NAF de l'Ets
+
+	ETA.VTRSPCTABAT 				pourcentage d’abattement à appliquer pour le versement transport
+
+						Attention : 	la variable ETA.VTRSTAUX n’est alimentée que s’il s’agit d’un taux spécifique.
+								Quand on est dans SS009, mieux vaut se référer à la variable TauxP
+
+	ETA.TaxeSalairesSurSeuilsAnnuel		Bool	Indique Taxe sur les salaires sur cumuls annuels
+
+	Eta.NomInterne				str	Nom de l'Ets
+	ETA.TaxeSalairesAbattement
+---------------------------------------------------------------------------
+print CumulPrimesParNature(5)
+
+AVANTAGE_EN_NATURE = 5,
+REMUNERATION_AU_POURBOIRE = 7,
+FRAIS_PROFESSIONNELS = 10,
+CHEQUES_VACANCES = 15,
+IMPOT_A_LA_SOURCE = 20,
+INDEMNITE_EXPATRIATION = 25,
+INDEMNITE_IMPATRIATION = 30,
+ALLOCATION_PRERETRAITE = 35 /*Supprime*/,
+SOMME_ISOLEE = 40,
+EPARGNE_SALARIALE = 45,
+PARTICIPATIONFINANCEMENTSERVICESPERSONNES = 50
+
+
+
+
+
+-----------------------------------------------	Fonctions
+	Exec("TAUX_SS001.1")			Appel du Taux de cotisation SS001.1
+						Cette fonction remplit Tauxs, Tauxp, Basecsg, Base8 Basefs
+
+						ReferenceTaux 	permet de fixer la reference du taux dans la ligne de Cotis et de fait
+								pour la recherche des reguls
+
+	exec("TAUX_RAZ")			fonction de Remise a zero des taux
+
+
+	TauxCCP					Permet d'acceder au taux de cotisations de la caisse de conges payés
+						Si la ste est affiliée à une caisse CP mais non
+						Si l'organisme n'est pas connu on prend le taux par defaut de la caisse CP001
+
+
+
+	Exec("LegalTaux_AR002")			Appel du taux Ar002 valeur legale uniquement
+						Cette fonction remplit LegalTauxs, LegalTauxp
+
+
+	Exec("Lprime_PD0101")			Appel de la prime PD0101 lecture des infos de la prime sans effet direct
+						il faut pour executer la prime sur le bulletin faire GenereLprime
+
+
+	Exec("GenereLprime")			Genere reellement la prime dans le bulletin
+
+	Exec("GenereLCotis")			Genere reellement la cotisation dans  le bulletin facultatif ne sert pour generer
+						deux lignes avec le meme code pour les exonerations
+
+
+	Exec("PCOTIS_SS")			Appel et execution d'un Profil 	Pcotis de Cotisation SS
+	Exec ("Pprime_PCCN")							Pprime de primes PCCN
+	Exec ("PostPPrime_xxxxx")		Appel et execution d'un profil en fin des primes
+	Exec ("PostPprime0_AENLOG")
+
+	exec("postpprime2_PANS")		PostPrime2 meme chose que postprime mais encore apres et apres les infos natives de fin de contrat
+
+
+
+	MtPart.xxxx				Recherche du Montant particulier xxxx en fonction de la date courante du bulletin
+	MtPartFixe.xxx				Meme chose sans prendre en compte le decalage de paie
+	MtpartLegal.xxx				recherche de la valeur legale de xxx sans prendre en compte la CCN
+	MtpartCCN.xxx				Retour de la valeur conventionnelle sans prendre en compte la valeur du dossier
+
+
+	Mtpart0101.xxx				recherche d'une valeur xxx en date du 1er Janvier de l'annee en cours
+	MtpartLegal0101.xxx
+	MtPartDate(date(1,1,2010),"SMICH")
+
+	Mtpart.Tresto				Donne la valeur du ticket restaurant avec la variable ticket restaurant donné dans
+						le dossier
+	toto = "SMICH"
+	x = mtpart(toto)			Recherche d'un Mtpart en passant par une variable
+	x = MtpartLegal(toto)
+	x = MtPartCCN(toto)
+
+	cumulsalaires ( variable date debut, date fin , Bool1 ,bool2,"xxxxx" )
+						Cette fonction retourne un double donnant la somme des salaires sur la periode
+						definie par date debut date fin
+						les 3 booleens permet de dire ce que l'on veut prendre en compte dans le resultat
+						Bool1 indique salaire de base  True on prend en compte le SDB
+						Bool2 Indique si l'on prend en compte les absences
+						"xxxxx" chaine de caracteres permet de reperer les primes attribuées par un marquage
+
+						cumulsalaires ( bul.cpdtdebant, bul.cpdtfinant, true,true,"13MOIS" )
+						Calcul du cumul des SDB - Absences + primes marquees "13MOIS"
+						sur la periode de CP de l'année e cours
+
+	cumulbulletins(date(1,1,2009),date(31,12,2009),1)
+						Fonction de calcul de cumuls sur les bulletins de salaire entre deux dates
+						le dernier paramètre :
+						0 = cumul des salaires de base
+						1 = cumul des bruts
+						2 = somme des BrutAL
+						3 = cumul NBHMN + NBHMM
+						4 = Brut hors congés payés
+						5 = cumuler les PSS
+						6 = Le nombre de mois sur lesquels on a des bulletins entre les deux dates données
+						7 = la somme des heures contrats de bulletins de date à date.
+ 						8 = Somme des plafond GMP
+						9 : cumul des bases gmp
+						10 : cumul des heures contrats (extension du 7, avec les 3 types d’heures libres)
+ 						11 = Reintegration Sociale
+						12 Donne le sigma des Bul.SalaireDeBaseHeuresNormales
+						13 : base CSG
+						14 : base CSG non abattue
+						15 : nombre d’heures normales contractuelles
+						16 : Reintegration Sociale origine Agirc Arrco
+
++100   il n' y a plus de test sur les dates
+
+
+
+print CumulBulletins(date(1,1,2012),date(1,11,2012),12)
+
+
+
+
+CumulBulletins(MaDateDebut,MaDateFin1,11)
+
+CumulBulletins ( date ( 1,12,2011), date ( 1,12,2011), 7)
+
+
+	Opérations sur les dates
+	d = Date(j,m,a)    			Fabrication d'une date en ayant jour,mois,annee
+	j = DateDay ( d )  			Récupération du jour d'une date
+	m = DateMonth ( d ) 			Récupération du mois d'une date
+	a = DateYear ( d ) 			Récupération de l'année d'une date
+	d = DateAddDays ( d, j ) 		Fabrication d'une date avec j jours de plus
+	d = DateAddMonths ( d, m ) 		Fabrication d'une date avec m mois de plus
+	d = DateAddYears ( d, a ) 		Fabrication d'une date avec a années de plus
+
+
+
+
+
+	MtCotis ( chaine, indice )		Calcul la valeur d'une cotisation exemple : MtCotis ( "SS001" , 1 )
+						chaine = un code libellé
+						indice = 0 : cotisations salariales
+						indice = 1 : cotisations patronales
+
+
+
+
+	Exoneration("xxx")			Fonction de recherche d'une exoneration xxx
+						le retour est un booleen True si l'exneration est effetive  Fals sinon
+
+
+	Exoneration_Debut("xx")			Fonction retourne la date debut d'activation de l'exoneration xxx
+
+	Exoneration_Fin("xx")			Meme chose date fin Exo
+
+
+	Mid(str,1,6)				Prendre les 6 premiers caracteres de la variable str
+						Exemple : class = Mid(classification,1,6)
+
+	Mid(Salarie, StrPos(Salarie, "-") + 2, -1)
+
+	StrPos(bb, "-")
+
+
+
+	RecupereMethode("003","x")		Retourne un string resultat du contenu de la methode 1er agurment
+						Si la methode n'existe pas le retour par defaut est la valeur du 2em arg
+
+
+
+
+
+
+	call FixeNbHReellesNormales  ( Saisie ( "NBHRN", 0.0) )
+Call FixeNbJReels(double)
+Call FixeNbJReelsOuvres(double)
+Call FixeNbJReelsOuvrables(double)
+
+
+
+	call MidSet(Str,3,2,"XX")		Fonction Mid pour modifier une zone Str de la position 3 sur une longueur de 2
+						par la valeur xx
+
+
+	call S41_G01_00_029_001( Bases )	Mettre la zone Bases dans une zone de l'entet deu bulletin Base SS pour la DADS
+						Valable si le BRUTAL ne correspond pas a la base SS a declarer dans la DADS
+
+	print CalculeAncienneteA ( date ( 31,8,2011) ) Donne une Ancienneté
+
+
+		print "ABS.DtDeb=" + ABS.DtDeb
+
+		x = CalculeAncienneteA ( ABS.DtDeb)
+		print "Anciennete=" + x
+	DateDebutMaintien = date(10,9,2012)
+
+
+
+Fonctions
+Call AffecteCPSupJoursAcquis ( x )
+Call AffecteCPSupJoursPrisCeMois(0.0)
+Call AffecteCPSup2JoursPrisCeMois(0.0)
+
+
+
+	BUL.XXXHeuresAcquises
+	BUL.XXXHeuresPrises
+	BUL.XXXHeuresAcquises_1
+	BUL.XXXHeuresPrises_1
+
+	Fonctions :
+
+	Call AjouteXXXHeuresAcquises ( double )
+	Call AjouteXXXHeuresPrises ( double )
+	Call AffecteXXXHeuresPrises ( double )
+
+	Où XXX vaut RCR, RCC ou RCO
+
+	Note :
+
+	A la fin du calcul des heures, la mention “Repos compensateur acquis ce mois” sortait pour peu que le RCR acquis était différent de zéro.
+	J’étends la notion aux deux autres types et mets “Repos compensateur (XXX) acquis ce mois” pour préciser duquel il s’agit.
+
+	call MessageRCRHeuresAcquisesActif(false)
+	call MessageRCCHeuresAcquisesActif(false)
+	call MessageRCOHeuresAcquisesActif(false)
+
+
+
+
+	BUL.RCRHEURESACQUISES
+	BUL.RCRHEURESPRISES
+	BUL.RCRHEURESDEJAPRISES
+
+	BUL.RCRHEURESACQUISES_1			Cumul passe
+	BUL.RCRHEURESPRISES_1			Cumul passe
+
+
+	Fonctions
+
+	Call AjouteRCRHeuresAcquises(double)
+	Call AjouteRCRHeuresPrises(double)
+
+	Call AjouteRCCHeuresAcquises(double)
+	Call AjouteRCCHeuresPrises(double)
+
+	call AjouteRTTPris(double)
+	Call AjouteRTTAcquis ( x )
+
+	Call AffecteRTTPris(Double)		Fonction pour forcer le resultat
+
+
+	Call AjouteCPPris2 ( NbJCP, nbjcp * pucp )	Mouvemente CP Pris et la provision
+	Call AjouteCPPris  ( NbJCP )			Mouvemente qua les CP Pris
+
+	call AjouteCpAcquisRef(1)
+	call AjouteCpAcquisAnt(2)
+
+
+
+
+
+
+	call SetSalDouble ( x1, x150)		Fonction permet d'ecrire dans le fichier salaire variable double x1 valeur x150 sera ecrite
+						dans le fichier
+
+	call ajoutebasecsg(1000)
+
+	call DeclareBase("GMP")			La base salariale de la ligne devient la base GMP attention a verifier le ne suis pas certain
+
+
+	Dans Pgc
+
+	call AffecteBaseCSG(600)
+
+	call AffecteBaseCSG(600+bul.basecsgdesprimes-bul.gainhchstepa)
+	call AffecteBaseCsgDefinitive ( dd )		Dans ce cas il n'y a plus de reinjection des variables imputables a csg
+	call AjouteBaseFS(x)
+
+	Call AffecteGainHcHsTepa ( aexclure )		 Pour affecter la variable GainHcHSTepa pour calcul de base SCG
+
+	Call AjouteNetImposable ( 10000 )
+	bul.NetImposableDisponible = false 		Bool qui dit si le net imposable est calculé ou pas
+
+	call affectebasecsgDefinitiveSansAbattement (INTERSVERS)
+
+
+	begin
+
+	    call AffecteTauxHoraireHS(13)
+
+	    call GenereLHeure("HS25", 14.0)
+	    Call GenereLHeures0712("HS25", 14.0)  heures avec les heures avant juillet 2012 Tepa et non imposables
+	    Call GenereLHeure0812(“HS25”,14.0)
+	end
+
+Ajout d'une fonction GenereLHeurePeriode(Code,NbH,Periode) qui permet de générer des heures en précisant de quelle période elles sont issues . Cela permet notamment de préciser que l'on veut payer des HS de 2018 sur une paie de 2019 de façon à ce qu'elles ne soient pas exonérées
+
+
+	------ 	STOCKAGE de VARIABLES ----------------------------
+
+	call stockevar("mavar1",variablesaisie("var1"))
+	call stockevar("mavar1", x )
+						Stockage de la variable x  sous le nom 'mavar1'
+
+	call stockevar("mavar2",variablesaisie("var2"))
+
+	y = stockvar("mavar1") + stockvar("mavar2")
+ 						Stockvar lecture des variables de stockage et reprise de celle dont le nom est mavar1
+
+	x= cumulstockvar(date(1,1,2010),date(1,12,2010),"mavar1")
+						Cumul de variables stockees sur une periode de paie
+	call stockevar("mavar3",x)
+
+
+
+Edition :
+
+	<bul.stockvar.mavar3>
+
+	--------------------------------------------------------------
+
+
+
+	y = Round(x,nbdec)
+
+						Appel d'une fonction de Calcul Version Légale
+	ForfAppren = 0  			<----------- DECLARATION / INITIALISATION OBLIGATOIRE
+	exec("LEGALFC_SAL-APPRENTIS")
+	LegalForfAppren = ForfAppren            <----------- AVANT UTILISATION, SINON ERREUR DE COMPILATION
+
+
+	exec("FC_SAL-APPRENTIS")		Appel d'une fonction Calcul avec les regles de priorite de CCN
+
+
+
+						Que x soit un INT, un DOUBLE, un STRING :
+ 	ToInt ( x ) 				conversion de x en INT
+	ToDouble ( x ) 				conversion de x en DOUBLE
+
+
+	salminconv.h ( "A044.1.002" )		Acces au salaire mini conventionnel  la classification
+	salminconv.m ( "A044.1.002" )
+	garminconv.an ( "A044.1.002" )
+
+
+	CCN.PTx					Permet d'acceder a la valeur de la variable PT1 ou PT2 de la CCN a la date du bulletin
+
+	CCN0101.Ptx				valeur du point au 01 Janvier de l'annee en cours
+
+
+-----------------------------------------------	Variables de retour
+Calcul de cotisations
+	Codeducs	Code DUCS de la ligne de cotisation
+	Bases		Base salariale de la cotisation
+	Basep		Base Patronale de la cotisation
+	Tauxs		Taux salariale de la cotisation
+	tauxp		Taux Patronal de la cotisation
+	Basecsg		Permet de fixer le montant d'une retenue a prendre dans la base CSG dans le cas de retenue forfaitaire
+	Base8		Meme chose pour affecter la base de taxe 8%  exmeple BASE8 = BASEP   la base patronale rentre dans la
+			Taxe 8%
+
+	Marque1		Permet de marquer librement les primes par une chaine de caracteres ce marquage pemet de faire
+			une sommation des primes avec le meme marquage
+			Exemple :  Marque1 = "13MOIS"
+			Voir fonction Cumulsalaires pour exploiter le marquage
+
+
+Calcul Anciennete	CP-ANCIENNETE
+	Jours		Nbre de jours supplémentaire d'anciennete
+
+
+Calcul d'une Prime
+	MethodeCalcul 	Methode de calcul de la prime 		1	Base * Taux		Bases * Tauxs
+								2	Forfait			Bases
+								3	Montant * Montant	Bases * Tauxs / 100
+
+	LibLong 	Libelle de la prime sur le bulletin
+	Bases 		Base de la prime ou Forfait
+	Tauxs 		Taux ou 2eme facteur de la multiplication
+
+
+					Exemple
+
+						Exec("Lprime_A03")	Appel du modele de prime A03
+						MethodeCalcul = 2	Prime au forfait
+						LibLong = "TTTTTTT"	Libelle de la prime sur le bulletin
+						Bases = 2000		Montant de la prime
+						Tauxs = 0		2eme element du calcul au forfait inutile
+						MarqueInterne = "$Pxx"  Facultatif permet de rendre la prime modifiable
+									dans le bulletin
+									$Pxx $p fixe xx de 00 a zz
+						Exec("GenereLprime")	Lancement de la prime sur le bulletin
+
+
+
+
+	Saisie		Saisie d'une variable par les programme saisie des primes ou saisie des éléments variables
+	SaisieM1	Saisie meme principe mais la saisie conserve la valeur de la saisie du mois précédent
+
+			Exemple
+			MOTIV = Saisie("Toto", double)
+						Saisie de la variable toto le resultat est stocké dans la variable
+						MOTIV pour la suite du programme elle s'appelle toto dans les donnees memorisees
+						d'ou l'interet de garder le meme nom
+						La fonction SAISIE est execute par la saisie des elements variables
+						Lors du calcul de la paie Motiv sera remplie du contenu de la saisie
+						stockée dans TOTO
+						La variable toto peut etre definie avec un nombre d'entiers et de decimales
+						La variable est initialisée par la valeur du double
+
+			MOTIV = SaisieM1("TOTO")
+						Meme chose avec maintien de la valeur d'un mois sur l'autre
+
+
+	double = VariableSaisie(nom_variable)	Reprendre une variable saisie exemple voir SS015
+
+
+
+
+
+Texte = SaisieChaine("Commentaire","")
+
+
+
+
+
+Fonctions Calcul Maintien
+----------------------------------------------- Fonctions CALCUL
+	SAL-APPRENTIS				Calcul du salaire de base des apprentis
+
+						Valeur de retour
+			CoefApprentis		Coefficient du smic ou du salaire de reference en fonction
+						de l'age et du niveau
+
+			TauxHoraireReference 	Valeur du salaire de reference
+
+			ForfAppren		Forfait de cotisation Apprentis
+
+----------------------------------------------- Fonctions CALCUL
+	M-MALADIE	M-MATERNITE
+
+		begin
+
+ 						Indemnité Légale ou Conventionnelle
+		Carence=7			Carence Variable definissant le nombre de jours de carence a appliquer
+		CarenceJoursOuvres = true	ou False  False valeur par defaut
+
+		TypeMaintien=Brut		TypeMaintien = 	Brut
+								BrutLimite  Calcul sur le brut avec une limite a 100% du Net
+
+		Plage=Mois12			Plage		Mois12			travail sur les 12 derniers mois
+								AnneeCivile		Travail sur Année Civile
+						Plage 		Absence, pour ne considérer que l’absence
+ 								AnneeCivileDebutAbsence, pour prendre les absences depuis le début de l’année du début de l’absence
+								AnneeCivileFinAbsence, qui vaut la même chose que AnneeCivile
+
+
+
+		NbJours1 = 30			Nbjoursx 	Nbre de jours indemnisation au pourcentage donne dans
+		PCent1 = 90			Pcentx
+
+		NbJours2 = 30
+		PCent2 = 2/3
+		Maintien			Bool	false 	indique pas de maintien a faire
+							True	Active la gestion du maintien sur le salarie
+
+
+		AffectationDADS			Str	chaîne disponible contenant l'affectation DADS de l'absence
+						permet de tester la nature de l'absence Maladie MP AT ...
+						09	Maladie
+						08	Maladie Professionnelle
+						04	Accident du travail
+						11	Accident de trajet
+		end
+
+----------------------------------------------- Fonctions CALCUL
+
+	M-INTEMPERIE	Calcul des indemnites Itemperies
+
+	variable donées Carence			Nbre d'heures de carence
+			HIntemperies  		Nbre d'heures d'intemperies
+			tauxhoraireintemperies 	Taux horaire pour intemperies
+
+			Exemple de parametrage
+				If ( Hintemperies - Carence ) > 0 Then
+				 Exec("Lprime_H10")
+				 Tauxs=bul.tauxhoraire * 75 / 100
+				 tauxs = tauxhoraireintemperies
+				 Bases = Hintemperies - Carence
+				 methodeCalcul = 3
+				 Exec ("GenereLprime")
+				EndIf
+
+
+
+----------------------------------------------- Fonctions CALCUL
+
+	SALMINCONV
+
+1) Dans la classification du métier, mettre FC_SALMINCONV
+2) Créer une fonction de calcul, nommée SALMINCONV pour la convention collective
+3) Variables en entrée :
+
+BUL.DATE
+ETA.DEPARTEMENT
+ETA.CODEREGION
+EMP.COEFF1
+EMP.COEFF2
+EMP.COEFF3
+EMP.COEFF4
+EMP.CLASSIFICATION
+
+4) Variables en sortie :
+
+salminconv.h
+salminconv.m
+garminconv.an
+basehorairemensuelle
+bap	Bareme assiette deprime
+
+
+
+uneannee = dateyear ( bul.date )
+permet d'obtenir l'année de bul.date
+
+------------------------------------------------------------------
+
+
+
+-----------------------------------------------	Instructions
+
+Begin
+	If sal.S41.G01.00.018.006 = "01" then
+
+	Else
+
+	EndIf
+
+
+
+
+Select Case sal.S41.G01.00.012.001
+Case "04","05":
+	Return					Permet de sortir du module
+Case "25":
+
+Default:
+
+EndSelect
+
+Exit						Sortie d'une boucle do loop
+
+
+End
+
+
+------------------------------------------ Questionnaire Conventionnel Ets ou Salarie
+Variables alimentées et utilisables dans les parametrages
+	EMP.CCNBOOL[]		Bool	10 variables de chaque type sont Dispo
+	EMP.CCNINT[]		Int
+	EMP.CCNDOUBLE[]		Double
+	EMP.CCNDATE[]		Date
+
+	ETA.CCNBOOL[]		Bool	10 variables de chaque type sont Dispo
+	ETA.CCNINT[]		Int
+	ETA.CCNDOUBLE[]		Double
+	ETA.CCNDATE[]		Date
+
+
+
+call question_choix ( 8, 0, "Choix 0", 0 )		Question par Bouton radio
+	paramètre 1 : l'indice de l'entier recevant la réponse
+	paramètre 2 : la valeur qu'aura l'entier si le bouton radio est sélectionné
+	paramètre 3 : la chaine associée à la valeur
+	paramètre 4 : la place du rond par rapport au texte (0=texte à gauche et bouton à droite, 1=texte à droite et bouton à gauche)
+
+
+Call Question_Bool(1,"question ")			Question Boolleenne
+	paramètre 1 : l'indice du bolleen recevant la réponse
+	paramètre 2 : texte de la question case a cocher est a droite de la question
+
+Call Question_Int(1,"question ",3)			Question la reponse est un entier
+	paramètre 1 : l'indice due l'entier recevant la réponse
+	paramètre 2 : texte de la question à poser
+	Paramètre 3 : Nombre de digit a saisir
+
+Call Question_Double(1,"question ",4,2)			Question La reponse est un double
+	paramètre 1 : l'indice du double recevant la réponse
+	paramètre 2 : texte de la question à poser
+	Paramètre 3 : Nombre d'entiers a saisir
+	Paramètre 4 : Nombre de décimales a saisir
+
+Call Question_Date(1,"question ")			Question La reponse est une date
+	paramètre 1 : l'indice de la zone  recevant la réponse
+	paramètre 2 : texte de la question à poser
+
+
+call question_string(1,"Numéro d'affiliation",7,0)
+Paramètres :
+1 : le numéro de la chaine, de 1 à 9
+2 : la question à poser
+3 : la longueur maxi de la chaine
+4 : indiquer toujours 0 (un int en plus pour le futur)
+
+
+
+
+call AxeX (100 )
+	Définition de l'alignement des questions par rapport à la droite de l'écran
+
+call titre("Cotisations spécifiques au personnel roulant")
+	Titre
+
+call texte("Pour les conducteurs de car affectés à un service de transport de tourisme ou conducteurs de voitures particulières")
+	Texte
+call sautdeligne()
+call minisautdeligne()
+
+
+---------------------------- Exemples ----------------------------------
+begin
+
+call AxeX (100 )
+call titre("Cotisations spécifiques au personnel roulant")
+
+call question_bool (1,"Le salarié cotise-t-il à l'IPRIAC ")
+call question_bool (2,"Le salarié cotise-t-il au FONGECFA-Transport (transport de marchandises ou de déménagement) ")
+call question_bool (3,"Le salarié cotise-t-il à  AGECFA-Voyageurs (transport de voyageurs) ")
+
+call titre("Primes et indemnités conventionnelles")
+call texte("Pour les conducteurs de car affectés à un service de transport de tourisme ou conducteurs de voitures particulières")
+Call texte("affectés à un service de grande remise qui utilisent une langue étrangère à la demande de l'employeur")
+call question_bool (4,"Indemnité de langue étrangère ")
+
+call question_bool (2,"Le salarié cotise-t-il au FONGECFA-Transport (transport de marchandises ou de déménagement) ")
+call question_bool (3,"Le salarié cotise-t-il à  AGECFA-Voyageurs (transport de voyageurs) ")
+
+
+call texte("Vous allez maintenant répondre au questionnaire conventionnel")
+call texte("Ce questionnaire vous permet de disposer d'un exemple pour continuer le paramétrage")
+call sautdeligne()
+
+call question_int(1,"Valeur entière 1 :",3)
+
+call sautdeligne()
+
+call textex("La question qui suit nécessite des explications préalables")
+call textex("Ligne 1 de mon explication")
+call textex("Ligne 2, plus longue, de mon explication")
+call question_int(2,"La valeur entière 2 est sur 5 caractères :",5)
+call minisautdeligne()
+call minisautdeligne()
+
+call question_double(1,"La valeur double 1 est sur 4.2 caractères :", 4, 2 )
+
+
+call question_date(1,"La valeur date 1 :" )
+
+call minisautdeligne()
+
+call titre("Questions diverses et variées")
+
+call question_bool (2,"La question 2 est un peu plus longue que les autres :")
+call question_bool (3,"La question 3 :")
+call question_bool (4,"La question 4 :")
+call question_bool (5,"La question 5 :")
+
+end
+
+
+
+
+
+Exemple d'utilisation
+
+begin
+
+call AxeX (100 )
+
+call titre("Question sous forme de bouton radio")
+
+call question_choix(8,0,"Choix 0 plus",0)
+call question_choix(8,1,"Choix 1 plus plus",0)
+call question_choix(8,2,"Choix 2 plus plus plus",0)
+
+call question_int(8,"Valeur entière 8 :",1)
+
+call titre("Autre question sous forme de bouton radio")
+
+call AxeX ( 400 )
+
+call question_choix(9,1,"Choix 1 plus",1)
+call question_choix(9,2,"Choix 2 plus plus",1)
+call question_choix(9,3,"Choix 3 plus plus plus",1)
+
+call AxeX (100 )
+
+call question_int(9,"Valeur entière 9 :",1)
+Call question_Bool(1,"Le salarié cotise-t-il a la caisse xxx")
+end
+
+
+
+
+
+
+
+
+
+Procédure d'intégration Convention Collective
+
+1- 	Classification des métiers avec	Salminconv par classification
+					Questionnaire Conventionnel
+
+2-	Plan de cotisations si necessaire
+	Taux de cotisation spécifique
+
+3- 	Plan de Primes si necesaire Ancienneté par exemple
+
+4-	CP-ANCIENNETE 		à créer on peut le creer a chaque CCN
+
+5-	CP-FRACTIONNEMENT	à creer que si le fractionnement est spécifique a la CCN
+
+------------------------------------------------------------
+
+
+
+
+
+
+
+Fonction en Attente de réalisation
+
+
+Emp.Anciennete02		Anciennete du salairie dans le batiment toutes employeur confondu
+				M-MALADIE Avons besoin de tester l'ancienneté du salarie dans l'entreprise et dans le monde du batiment
+anciennete04 			"ancienneté ds le poste"
+
+
+
+BaseMaintien			Dans les fonctions M-MATERNITE = SJB par exemple ???
+
+
+
+Arr.dateDeb			Date du debut de l'arret de travail courant meme si ce n'est pas sur le mois de paie
+Arr.dateFin			Date de fin ....
+Arr.dateDebDuMois		date debut de l'arret sur le mois oudebut du mois
+Arr.dateFinDuMois		Date de fin Arret sur le mois
+
+Emp.Anciennete(Date)		Valeur de l'anciennete a la date 'date'
+Il faut connaitre la date anniv pour calculer la carence
+
+
+======================================================================
+⚠ DÉPÔT PARTIEL (2026-07-07) — les sections suivantes de l'extrait
+d'origine restent à déposer (suite du document transmis par Blandine) :
+champs du modèle de bulletin, conversions heures, GenereLHeure,
+CumulLignesEmploi/Salarie, primes en net, analytique, SaisieCarac,
+éléments calculés, profils utilisateur (PPU*), POSTNETAPAYER, import
+XLS des EV, fonctions d'import IMP* (squelette, options par.*,
+Identifie*/Genere*), éditions historiques (exemples en-tête/lignes),
+tables C# CDT_SILAE_DOM_* (PAISALARIE, PAISALARIEEMPLOI, PAIBULLETIN,
+INTERVENANT), GroupeHS/GroupeHT, calcul virtuel, FACTEURS2126,
+CODEMASQUEBULLETIN, CONTROLEABSENCES, ChangementMoisClotureCP, et
+notes diverses. Voir sources/raw/A_DEPOSER.md.
+======================================================================

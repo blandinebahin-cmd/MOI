@@ -1,0 +1,15 @@
+CPT_SILAE
+
+Begin
+// CDJ le 18/03/2020 : Stockage des compteurs RTT et CPSup( si besoin)
+call stockevar("GDLP_RTTACQUIS", Bul.RTTJoursAcquis)
+call stockevar("GDLP_RTTPRIS", Bul.RTTJoursPris)
+
+call stockevar("GDLP_CPSUPACQUIS",Bul.CPSupJoursAcquis)
+call stockevar("GDLP_CPSUPPRIS",Bul.CPSupJoursPris)
+
+call stockevar("GDLP_CPSUP2ACQUIS",Bul.CPSup2JoursAcquis)
+call stockevar("GDLP_CPSUP2PRIS",Bul.CPSup2JoursPris)
+
+
+End

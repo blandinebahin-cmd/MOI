@@ -1,0 +1,58 @@
+COMPTEUR - Jour de repos compensateur
+
+// ER le 24/11/2022 - DEM-221118-018 - Création d'un compteur de Jour de repos compensateur (qui est bien distinct des compteurs de Repos compensateur RCC et RCR utilisés sur le dossier
+// ALL le 22112023 : INES 10680 - Correcion du profil prime + CPSUP cloture en décembre
+
+Begin
+
+//////////////////// Création d'une variable pour le nommage du compteur ( utilisé dans le masque d'EV)
+NomCpt = "J.Repos"
+
+
+//////////////////// Alimentation manuelle du compteur acquis et pris (par ajout)
+CptAcquis = Saisie(NomCpt + ".Acquis+-",0)
+CptPris  = Saisie(NomCpt + ".Pris+-",0)
+
+
+//////////////////// Sur le mois de bascule, SILAE ne reporte pas les soldes de compteurs, on va donc les chercher manuellement
+SoldeReporté = 0
+
+If bul.mois = 1 then
+	DateM1 = DateAddMonths(bul.periode,-1)
+	//ALL le 22112023 : Correction du nom du stockvar
+	//SoldeReporté = CumulStockvar(DateM1,DateM1,"GDLP_J.REPOS.ACQUIS") - CumulStockvar(DateM1,DateM1,"GDLP_J.REPOS.PRIS")
+	SoldeReporté = CumulStockvar(DateM1,DateM1,"GDLP_CPSUP2.ACQUIS") - CumulStockvar(DateM1,DateM1,"GDLP_CPSUP2.PRIS")
+Endif
+
+//////////////////// Paiement du Solde en cas de STC
+
+If bul.sorticemois = true then
+	CptPrisPayeSTC = Bul.CpSup2JoursAcquis - Bul.CpSup2JoursPris + CptAcquis - CptPris + SoldeReporté
+
+	If CptPrisPayeSTC <> 0 then
+		Exec("lprime_I04")
+		Bases = CptPrisPayeSTC
+		Tauxs = bul.salairedebase / 21.67
+		Methodecalcul= 3
+		LibLong = "Indemnités compensatrice Jour de repos compensateur"
+		Exec("generelprime")
+		CptPris = CptPris + CptPrisPayeSTC
+	Endif
+Endif
+
+
+//////////////////// Alimentation du compteur des acquis et pris - Ne se fait que dans le bulletin final, car sinon, la saisie faite en EV est doublée
+If Bul.Fonction = Fonction.CALCULNORMAL then
+	Call AffecteCPSup2JoursAcquis( CptAcquis )
+Endif
+
+If CptPris  <> 0 Then
+	If Bul.Fonction = Fonction.CALCULNORMAL then
+		//ALL le 22112023 : Correction du nom de la fonction
+		//Call AffecteCPSupJoursPris( CptPris  + Bul.CpSup2JoursPrisCeMois)
+		Call AffecteCPSup2JoursPris( CptPris  + Bul.CpSup2JoursPrisCeMois)
+
+	Endif
+Endif
+
+End

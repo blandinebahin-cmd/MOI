@@ -127,6 +127,30 @@ Décision Blandine : pas de saisie manuelle → import. Seule voie d'import 100 
 - Fiche société (point ouvert) : **report auto du solde à la clôture** — un report des 3 j non consommés de l'ancien N-1 au 31/05 expliquerait aussi +3, et changerait **tout le chiffrage de masse** (les salariés n'auraient alors rien perdu). Contre-indice : juin observé = 29/3/26 sans report.
 - **Ligne `B01 Commissions` 3.00** : coïncidence suspecte avec la valeur importée → vérifier la provenance (colonne EV Commissions ? code EV du CSV apparié à deux colonnes ?). Si l'import alimente B01, il y a un **impact en euros dans le brut** — bloquant absolu pour la masse. Si ce sont de vraies commissions de 3.00 €, lever le doute et tracer.
 
+### ✔ Cause identifiée (2026-07-07) — code du profil `MAJCPN-1` (OBSERVÉ, déposé dans `sources/raw/2026-07-07_STD_MAJCPN-1_code-profil.txt`)
+
+```silae
+NB = saisie("NbjCPN-1",0)
+Prov = BUL.CpProvAcquiseRef - Bul.CpProvAcquiseRefParReport
+Nbcp = BUL.CPNBJACQUISREF - Bul.CpNbjAcquisRefParRepport
+...
+//Call AffecteCPAcquisRef ( Nb )
+Call AffecteCPAcquisRef ( Nb + Bul.CPReportJours )   //Ni 05032026 #137665 - Tenir compte des CP acquis par report lors de l'ajout sur mois suivant mois de cloture
+call AjouteProvCpRef  (Nb * (Prov / Nbcp))
+```
+
+- Le profil **force** (`Affecte`, pas `Ajoute`) le champ Élém. calculés « Acquis / Période de référence » du bulletin à **`NB + Bul.CPReportJours`** — correctif éditeur **#137665 du 05/03/2026**.
+- **DÉDUIT (arithmétique)** : 35 = 29 + 3 (NB) + 3 → **`Bul.CPReportJours` = 3** pour le salarié test, soit **exactement son solde ancien N-1 au 31/05**. Le dossier **reporte donc le solde non consommé à la clôture** (`SAL_ClotureCPReport` / option société — le point ouvert « report auto » est en réalité ACTIF, au moins pour lui).
+- **Conséquence majeure (À CONFIRMER en priorité)** : si le report est natif, le compteur **s'auto-corrige à partir de juillet sans aucun import** (juillet natif attendu : 29+3 report / 3 / **29** = la cible). L'import des 86 serait alors **inutile et sur-créditerait tout le monde** de la valeur importée — exactement ce qu'on observe sur le test. Et les **3 corrigés manuels (10/8/1 j)** seraient à re-contrôler : leur correction de juin + le report de juillet = **sur-crédit du même montant**.
+
+**Checks de confirmation (rapides) :**
+1. **Salarié témoin NON importé**, bulletin de juillet en brouillon : bandeau CP N-1 attendu `(acquis+report)/pris/solde-cible` (ex. 32/3/29) et Élém. calculés « Acquis / réf » montrant le report → confirme l'auto-correction.
+2. **Salarié test** : Élém. calculés juillet « Acquis / réf » attendu **6.0000** (= Affecte 3+3) → confirme la lecture du code.
+3. Les **3 corrigés manuels** : bandeau juillet — si solde > cible du montant corrigé, le report double leur correction de juin.
+4. `B01 Commissions 3.00` : **non expliqué par ce code** (le profil ne génère aucune ligne) → vérification distincte maintenue.
+
+**Si confirmé** : annuler la saisie importée du salarié test (Saisie des EV juillet → **Réinitialiser les saisies** → F5), **abandonner l'import de masse**, laisser le report de clôture faire la correction des compteurs, re-contrôler l'EH sur juillet, et re-chiffrer le seul sujet restant : l'écart d'**ICP** (10ème nouvelle vs ancienne période) payé en juin, qui n'est pas corrigé par le report.
+
 **Décision : import complet (86 lignes) SUSPENDU** tant que l'excédent +3 et la ligne B01 ne sont pas expliqués. La mécanique d'import elle-même est validée (colonne pérenne + CSV + « OUI » fonctionnent).
 **Correction selon cause** : résidu EV sur juin → effacer la saisie de juin (modif compteur sans impact DSN, mais bulletin de juin réédité — mois payé/DSN transmise, décision à tracer) ; doublement structurel du profil → abandonner la voie A, basculer voie B (Élém. calculés) ou voie C (ticket éditeur).
 **Rappel** : même corrigée, la voie A affichera 32/3/29 (trade-off assumé) — l'affichage exact 29/0/29 n'existe qu'en voie B/C.
@@ -173,3 +197,4 @@ Exemple (salarié test 2, cadre B065, forfait 218 j, anonymisé — bulletins ho
 |---|---|---|---|
 | 2026-07-07 | Dépôt initial dans `knowledge/cases/` (statut DIAGNOSTIC) | Capitalisation §7 AGENTS.md | Assistant (session Claude) |
 | 2026-07-07 | Ajout section « Test import IMPORTSILAE + MAJCPN-1 » : résultat non conforme (35/3/32 au lieu de 32/3/29, +3 j en trop), import de masse suspendu, checklist de discrimination | Résultat de test observé (captures Blandine) | Assistant (session Claude) |
+| 2026-07-07 | **Cause identifiée** : code MAJCPN-1 observé — `AffecteCPAcquisRef(Nb + Bul.CPReportJours)` (#137665) → CPReportJours=3 déduit → report de clôture actif, auto-correction probable en juillet, import de masse remis en cause | Code du profil transmis par Blandine | Assistant (session Claude) |
