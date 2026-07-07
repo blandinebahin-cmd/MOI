@@ -229,6 +229,23 @@ Après l'étape A (saisie `NbjCPN-1` vidée ✔, MAJCPN-1 remplacé par REGULCPN
 - **CHAY : congé parental** → colonnes CP N vides normales (suspension d'acquisition). Clos.
 - **JORION (RTT −1)** : ne provient pas de l'import (le profil ne touche que le pris CP N-1 — confirmé par le code) ; sa ligne RTT paraissait déjà anormale sur la vue de **mai** → **préexistant probable**, à confirmer en régénérant l'édition sur juin ; vérifier fiche emploi (type d'acquisition RTT) + absences RTT saisies.
 
+## ⚠ SUR-CORRECTION DÉTECTÉE (2026-07-08, audit du cas GIOVANNACCI) — le fichier devait être plafonné au solde ancien
+
+**Reconstitution GIOVANNACCI (OBSERVÉ, bulletins avril→juillet)** :
+- Avril : ancien N-1 = 29/26/**3**.
+- Mai (clôture) : 10 j pris 13-24/04 saisis sur mai → **arbitrage Silae : 3 sur l'ancien N-1 (→ 29/29/0) + 7 en anticipé sur N (→ 29/7/22)**. L'ancien solde est épuisé **avant** ses prises de mai.
+- Juin : 4 j pris 11-15/05 saisis sur juin → imputés au nouveau N-1 → 29/**11**/18. **Imputation CORRECTE** : son ancien solde étant à 0, ces 4 j ne pouvaient être qu'anticipés — juin = même résultat que s'ils avaient été saisis sur mai.
+- Post-import : 29/**7**/22 = **sur-correction de 4 jours** (solde gonflé de 4). Cible réelle : **29/11/18**.
+
+**Règle générale (celle que le fichier aurait dû appliquer)** : correction = **min(jours de mai saisis sur juin ; solde ancien N-1 au 31/05)** — le surplus au-delà du solde ancien était de l'anticipation légitime. Le fichier a envoyé les jours de juin **sans plafond**. Conclusion antérieure sur les « 3 oranges » (« correction = valeur juin, anticipés conservés ») : **erronée** — leurs jours de juin étaient eux-mêmes de l'anticipation (ancien solde 0).
+
+**Salariés sur-corrigés (liste préliminaire, lue sur les vues de mai — À CONFIRMER par croisement export mai × fichier)** : sur-correction = max(0 ; valeur fichier − solde ancien 31/05) :
+GIOVANNACCI 4 → **0** · RUPPE 1 → **0** · TISSANDIER 8 → **0** · GARBOUJ 2 → **0** · BLANCHARD 3 → **1** · CAUDRON 7 → **6** · COGOLUEGNES 6 → **5** · DE GRIVEL 6 → **5,5** · DERRIENNIC 5,5 → **4,5** · DOWLING 4,5 → **1,5** · FAUCHER 5 → **2** · FLAMENT 7 → **6,5** · FRAN 3 → **2** · GIMADIEV 2 → **1** ≈ **29 j** sur les lignes visibles ; audit exhaustif requis sur tout le fichier.
+
+**Protocole de reprise (réversible, bulletins non validés)** : ① export « Ouvrir dans un tableur » du Solde des repos de MAI → colonne solde ancien N-1 ; ② croiser avec le fichier : `nouvelle valeur = min(valeur ; solde mai)` ; ③ corriger les saisies `CP.RegulPris` des seuls salariés touchés (saisie directe ou ré-import — l'import écrase la valeur) ; ④ F5 / recalcul des touchés ; ⑤ re-contrôle : cible pris N-1 = anticipés de mai + (jours juin − plafond), totaux : pris total = 21,5 + Σ surplus.
+
+**Note** : le brut de GIOVANNACCI reste strictement intact (6 240,00) — la sur-correction est purement compteur, aucun impact paie/DSN ; c'est rattrapable proprement tant que juillet n'est pas validé.
+
 ## Runbook d'exécution final (2026-07-08, profil nettoyé)
 
 Séquence exécutée/à exécuter — détail dans la réponse assistant du 2026-07-08 : **A.** désamorçage (vider `NbjCPN-1`, retirer MAJCPN-1 du PCCN01) → **B.** revalidation salarié test (F5, cible 29/0/29, brut 6 326,67 strict, F5 ×2 figé, solde de repos) → **C.** import `import_REGULCPN1_complet.csv` sur bulles rouges + calcul de juillet → **D.** EH sans filtre sur juillet (pris 0 / solde = acquis partout sauf 2 sorties), 3 oranges en unitaire, 2 témoins, spot-check solde de repos → **E.** ⚠ **REGULCPN1 et les saisies restent en place jusqu'à la validation de juillet** (la correction est recalculée à chaque calcul : retirer le profil ou réinitialiser les EV avant validation = tout annuler) ; nettoyage du PCCN01 en août (saisie non reportée, profil inerte). Rollback à tout moment avant validation : `Réinitialiser les saisies` + recalcul.
