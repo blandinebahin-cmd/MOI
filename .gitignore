@@ -1,0 +1,14 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires
+*.tmp
+*~
+~$*
+
+# Ne jamais committer de secrets ou d'exports sensibles non anonymisés
+*.env
+.env*
+*credentials*
+*password*
