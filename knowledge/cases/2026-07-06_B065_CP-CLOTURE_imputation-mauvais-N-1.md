@@ -247,6 +247,36 @@ GIOVANNACCI 4 → **0** · RUPPE 1 → **0** · TISSANDIER 8 → **0** · GARBOU
 - **RUPPE** : mai = ancien N-1 30/30/**0** (5 j d'avril arbitrés 3 ancien + 2 anticipés → CP N 29/2/27) ; juillet post-import = 29/**2**/27 → **sur-corrigé de 1 j**, cible réelle **29/3/26**.
 - Les deux bulletins de juillet sont propres côté paie (brut = SdB strictement, aucune ligne générée) — sur-correction purement compteur, comme GIOVANNACCI.
 
+**Audit définitif du plafond (2026-07-08, croisement vue de mai complète × fichier d'import)** — GIOVANNACCI repris ✔ (29/11/18 vérifié au bulletin). Sur-corrections restantes = `fichier − solde ancien 31/05` :
+
+| Salarié | Fichier | Solde ancien 31/05 | → `CP.RegulPris` | Cible compteur |
+|---|---|---|---|---|
+| TISSANDIER | 8 | 0 | **vider** | 29/12/17 |
+| RUPPE | 1 | 0 | **vider** | 29/3/26 |
+| GARBOUJ | 2 | 0 | **vider** | 29/2/27 |
+| RESMOND | 2 | 0 | **vider** | 29/2/27 |
+| BLANCHARD | 3 | 1 | **1** | 29/2/27 |
+| CAUDRON | 7 | 6 | **6** | 29/1/28 |
+| COGOLUEGNES | 6 | 5 | **5** | 29/1/28 |
+| DE GRIVEL | 6 | 5,5 | **5,5** | 29/0,5/28,5 |
+| DERRIENNIC | 5,5 | 4,5 | **4,5** | 29/1/28 |
+| DOWLING | 4,5 | 1,5 | **1,5** | 29/3/26 |
+| FAUCHER | 5 | 2 | **2** | 29/3/26 |
+| FLAMENT | 7 | 6,5 | **6,5** | 29/0,5/28,5 |
+| FRAN | 3 | 2 | **2** | 29/1/28 |
+| GIMADIEV | 2 | 1 | **1** | 29/1/28 |
+| GUEZO | 3 | 1 | **1** | 29/2/27 |
+| MAILLE | 3 | 2 | **2** | 29/1/28 |
+| OUERIEMI | 5 | 3 | **3** | 29/2/27 |
+| RAYMOND | 5 | 4 | **4** | 29/1/28 |
+| SIMONET | 12 | 11 | **11** | 29/1/28 |
+| SMATT PINELLI | 6 | 4,5 | **4,5** | 27/1,5/25,5 |
+
+**Reprises exécutées (vue juillet post-reprise, 2026-07-08)** : GIOVANNACCI 29/11/18 ✔ · TISSANDIER 29/12/17 ✔ · RUPPE 29/3/26 ✔ · GARBOUJ 29/2/27 ✔ — validées par le total : **pris N-1 = 36,50 = 21,50 (anticipés mai) + 15 (4+8+1+2 rendus)**, au dixième. **Restent NON reprises : les sur-corrections partielles du tableau ci-dessus (BLANCHARD → SMATT PINELLI + RESMOND, ~24,5 j)** — toutes encore à 29/0/29 sur la vue de juillet.
+
+**À vérifier (valeur fichier illisible sur captures)** : STEPHEN (solde ancien 0) et VIARD (solde ancien 0) — s'ils sont dans le fichier, **vider** leur saisie (tout leur montant était anticipé). Vérifiés conformes (exacts ou sous plafond) : BERARD, CHEVREAU, CLEMENT, CLEMENT-HAUSMAN, DEBRUS, DESBOIS, DUVAL, FERREIRA, HUGLA, KOBEISSI, LABINSKY, LE BIAN, MAZARS, MILANO, MUSAT, OLICHET, RAMONET, RIVIERE, SERREAU, VANDEN BOSCH, VASSELIN, VILLE, ZHURAKOUSKY, etc. Absents du fichier à juste titre (anticipés purs) : BAK, DELEUZE, HOGUIN, MAYZEL, TREMBLAY.
+Sur-correction totale ≈ **26,5 j** restants (hors GIOVANNACCI 4 déjà repris, hors STEPHEN/VIARD à confirmer). ⚠ Valeurs issues de lectures d'écran : re-passer le croisement en tableur avant saisie si le moindre doute.
+
 **Protocole de reprise (réversible, bulletins non validés)** : ① export « Ouvrir dans un tableur » du Solde des repos de MAI → colonne solde ancien N-1 ; ② croiser avec le fichier : `nouvelle valeur = min(valeur ; solde mai)` ; ③ corriger les saisies `CP.RegulPris` des seuls salariés touchés (saisie directe ou ré-import — l'import écrase la valeur) ; ④ F5 / recalcul des touchés ; ⑤ re-contrôle : cible pris N-1 = anticipés de mai + (jours juin − plafond), totaux : pris total = 21,5 + Σ surplus.
 
 **Note** : le brut de GIOVANNACCI reste strictement intact (6 240,00) — la sur-correction est purement compteur, aucun impact paie/DSN ; c'est rattrapable proprement tant que juillet n'est pas validé.
