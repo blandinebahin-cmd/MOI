@@ -174,6 +174,10 @@ End
 
 **GO import des 86** conditionné à : purge faite + F5 stable à 29/0/29 + EV de juillet du salarié test propre (seul `CP.RegulPris` restant, ou rien).
 
+## Runbook d'exécution final (2026-07-08, profil nettoyé)
+
+Séquence exécutée/à exécuter — détail dans la réponse assistant du 2026-07-08 : **A.** désamorçage (vider `NbjCPN-1`, retirer MAJCPN-1 du PCCN01) → **B.** revalidation salarié test (F5, cible 29/0/29, brut 6 326,67 strict, F5 ×2 figé, solde de repos) → **C.** import `import_REGULCPN1_complet.csv` sur bulles rouges + calcul de juillet → **D.** EH sans filtre sur juillet (pris 0 / solde = acquis partout sauf 2 sorties), 3 oranges en unitaire, 2 témoins, spot-check solde de repos → **E.** ⚠ **REGULCPN1 et les saisies restent en place jusqu'à la validation de juillet** (la correction est recalculée à chaque calcul : retirer le profil ou réinitialiser les EV avant validation = tout annuler) ; nettoyage du PCCN01 en août (saisie non reportée, profil inerte). Rollback à tout moment avant validation : `Réinitialiser les saisies` + recalcul.
+
 ## Points ouverts
 - Réglage fiche société : report auto du solde, mois de clôture, option décalage (non visibles dans la vidéo).
 - Confirmation du 10ème par période via la bulle de détail ICP.
