@@ -1,7 +1,5 @@
-> **Note de dépôt (2026-07-07)** — Cas capitalisé tel que transmis, contenu conservé intact.
-> Statut : **DIAGNOSTIC, en attente de validation Blandine** (§7 AGENTS.md — la validation finale sera tracée dans la section Révisions en bas de fichier).
-> Documents référencés : [`../SILAE_COMPTEURS_GESTION_MANUELLE.md`](../SILAE_COMPTEURS_GESTION_MANUELLE.md) (déposé le 2026-07-07) ; `SILAE_METHODES_CP.md` (emplacement réservé dans [`../`](../), contenu à déposer).
-> Sources brutes (vidéo, exports XLSX/CSV) volontairement **hors base** : données nominatives (§4.4), conservées dans `Downloads\` côté poste de travail.
+> **Note de dépôt** — Fiche alignée le 2026-07-08 sur la version maître consolidée de Blandine (fichier local `2026-07-06_B065_CP-CLOTURE_cp-pris-mai-saisis-juin.md`), contenu conservé intact. Les versions antérieures de la fiche (structure de ce dépôt) restent consultables dans l'historique git. Statut : **correction VALIDÉE sur salarié test (29/0/29, brut intact) — import de masse imminent**.
+> Sources brutes (vidéos, captures, exports CSV/XLSX) volontairement **hors base** : données nominatives (§4.4), conservées dans `Downloads\` côté poste de travail. Documents référencés : `SILAE_METHODES_CP.md` (emplacement réservé), [`../SILAE_COMPTEURS_GESTION_MANUELLE.md`](../SILAE_COMPTEURS_GESTION_MANUELLE.md), [`../PATRONS_PROFILS_PRIMES_ET_FC.md`](../PATRONS_PROFILS_PRIMES_ET_FC.md), [`../../sources/raw/REF_Langage_Silae_Syntaxes_et_variables.txt`](../../sources/raw/REF_Langage_Silae_Syntaxes_et_variables.txt).
 
 ---
 
@@ -84,6 +82,8 @@ Décision Blandine : pas de saisie manuelle → import. Seule voie d'import 100 
 - Menu : `Traitement mois > Import de données variables` → Import 1 = `IMPORTSILAE` → fichier → « OUI ». Annulation : Saisie des EV > **Réinitialiser les saisies**.
 - Protocole : ① test 1 salarié → calcul bulletin juillet → contrôles (compteur cible 32/3/29 : solde 29 ✓ ; provision N-1 ; provision consommée → si à recaler, profil `PROVCONSN1` massifiable par le même canal) ; ② import complet ; ③ contrôle EH **sans filtre** (dupliquer l'édition, retirer la ligne `If … LigneExclue`) : solde N-1 = acquis réel partout.
 - Trade-off assumé : acquis/pris affichés gonflés (+N/+N) ; l'exactitude d'affichage 29/0/29 n'existe qu'en unitaire (Élém. calculés) ou via l'éditeur.
+- **Test 1 salarié (2026-07-07) — import OK, branchement KO :** colonne `NbjCPN-1` alimentée à 3.00 sur juillet ✔ (mécanique IMPORTSILAE validée), MAIS bulletin de juillet : ① **ligne parasite `B01 Commissions` base 3.00 → +3,00 € de brut** (la valeur EV a déclenché une *prime* : une « prime » a été créée dans le conteneur au lieu d'un renvoi vers le *profil* standard) ; ② compteur N-1 = **35/3/32** au lieu de 32/3/29 attendu (+6 = **double exécution** probable de MAJCPN-1 — ajouté deux fois / deux canaux). → Rollback : `Saisie des EV juillet > Réinitialiser les saisies` + refaire bulletin (retour attendu 29/3/26, brut 6 326.67). Construction correcte : dans le **PCCN01 existant** (un seul par dossier — deck formation EV/profils), « + » → **« Ajouter un profil »** (≠ « Ajouter une prime ») → sélectionner **MAJCPN-1** (liste des profils pré-paramétrés) → Sauver ; supprimer tout profil `MAJCPN-1` créé à vide au niveau dossier (risque de masquage du standard) et toute « prime » au libellé de colonne NbjCPN-1. Le profil compteur ne doit générer **aucune ligne** de rémunération.
+- **Re-test après branchement PCCN01 (vidéo 2026-07-07 14h12)** : PCCN01 « Variables » du dossier contient bien un onglet-**profil** `MAJCPN-1` (via « Sélection ») ✔ ; le 2ᵉ écran « Profils primes » = création vierge non sauvée (pas de masquage) ✔ ; compteur juillet = **32/3/29 = CIBLE ATTEINTE** ✔ ; le +6 initial a disparu (doublon purgé au réinit/re-import) ; Élém. calculés juillet sains (Pris N-1 0, l'ajout MAJCPN-1 passe en report compteur, pas en « acquis du bulletin ») ✔ ; historique mai intact (Pris N-1 4.0000) ✔. **Reste UNE anomalie : ligne `B01 Commissions` base 3.00 → +3,00 € de brut** — une *prime* du PCCN01 (probable résidu du 1er essai « Ajouter une prime », code modèle B01, libellé de colonne homonyme `NbjCPN-1`) consomme la même saisie. → passer en revue TOUS les onglets du PCCN01 (flèches ◄►) + « Ouvrir dans tableur » la saisie EV pour repérer la colonne/prime en doublon → **Enlever la prime**, réinitialiser les saisies juillet, re-importer le TEST, refaire : attendu **32/3/29, brut 6 326.67 strictement, zéro ligne B01**. Alors seulement → import des 86.
 
 **Voies de correction :**
 - **A. Masse standard (≈1 h)** : profil `MAJCPN-1` (+N acquis N-1 + provision) pour les 90 via saisie EV de masse / import EV ; contrôler `PROVCONSN1`. ⚠ bulletin affichera acquis/pris gonflés (ex. 39/10/29).
@@ -108,124 +108,71 @@ Décision Blandine : pas de saisie manuelle → import. Seule voie d'import 100 
 - Le « divergent » à 4 j : lignes = PrisRef = 4 ✓ (l'écart de compteur 11 vs 4 est antérieur à juin — vérif détail maintenue).
 - Exemple re-validé en vidéo (cadre B065 entré 04/2023, 3 j pris 11-13/05) : mai = ancien N-1 30/27/**3** (3 j de solde, pris pile avant le 31/05) ; juin = nouveau N-1 29/**3**/26 + Élém. calculés « Pris N-1 = 3.0000 » → correction 3→0, cible 29/0/29, ancien N-1 réellement soldé 30/30. Pattern identique aux autres cas.
 
-## Test import `IMPORTSILAE` + `MAJCPN-1` du 2026-07-07 — ⚠ RÉSULTAT NON CONFORME (+3 j en trop)
+## Solution finale retenue (2026-07-07 soir) — profil spécifique `CP.REGULPRIS` (V1 à tester sur copie)
+Le script du standard `MAJCPN-1` (fourni par Blandine) + la bibliothèque GDLP (`CPPRIS_REG`, `CPSUP_GDLP`) débloquent tout :
+- **+6 expliqué** : le standard `MAJCPN-1` écrit les compteurs **sans le garde** `Bul.Fonction = Fonction.CALCULNORMAL` → écriture rejouée sur les passes de calcul (« la saisie EV est doublée » — commentaire GDLP). Défaut du profil **standard** → à signaler à l'éditeur (réf. patch #137665).
+- **Écriture du PRIS possible** : `AjouteCPPris(-x)` / `AjouteCPPris2(-x, -mt)` (GDLP `CPPRIS_REG`) → correction **exacte** (29/0/29), massifiable par import EV, sans MAJCPN-1.
 
-**OBSERVÉ (captures écran, salarié test matricule 1003082, entré 03/04/2023 — le cas « 3 j pris 11-13/05 » revalidé en vidéo) :**
-- Mécanique d'import OK : profil `MAJCPN-1` rattaché en **colonne pérenne** via le profil utilisateur `PCCN01` (« Variables ») ✓ ; EV de **juillet 2026** : colonne `NbjCPN-1` = **3.00**, une seule ligne, totaux 3.00, triangle vert ✓.
-- Bulletin de juillet : bandeau **CP N-1 = 35.00 / 3.00 / 32.00** (CP N = 4.17/0/4.17 ✓ = 2 × 2.0833 ; RTT 9/2/7).
-- Ligne **`B01 Commissions` = 3.00** en zone brut (brut 6 329.67 = SdB 6 326.67 + 3.00) — valeur **exactement égale** au nombre de jours importé.
-
-**Attendu (voie A, trade-off assumé) : 32 / 3 / 29** (acquis 29+3, pris 3 inchangé, solde 29). **Observé : 35 / 3 / 32 → l'acquis N-1 a pris +6 au lieu de +3** (DÉDUIT : baseline juillet = juin = 29/3/26, le N-1 n'acquiert plus). Un excédent de **+3 j** sur acquis et solde, alors que l'EV de juillet n'en porte que 3.
-**Baseline confirmée (2026-07-07)** : les 3 salariés corrigés manuellement avant l'EH étaient les cas à **10, 8 et 1 j** — le salarié test (3 j) n'en faisait pas partie ; aucun forçage antérieur ne peut expliquer le +3. L'hypothèse « correction manuelle antérieure » est **écartée** ; restent le résidu de saisie sur un autre mois et la double colonne EV (dont la saisie historique via « Ajouter un profil », la voie KB d'origine de `MAJCPN-1`, non pérenne — faite avant le rattachement PCCN01 ?).
-
-**Check discriminant n°1 (à faire en premier)** : bulletin de **juillet** → Éléments calculés → bloc « Jours de congés acquis/pris sur le bulletin » → ligne **Acquis**, colonne **Période de référence (N-1)** :
-- **= 3.0000** → le +3 excédentaire vient d'un **autre bulletin** → contrôler la grille EV de **juin** (colonne `NbjCPN-1` : résidu du test unitaire antérieur ?) et les Élém. calculés de juin (Acquis N-1 forcé ?).
-- **= 6.0000** → le doublement a lieu **sur juillet même** → défiler la grille EV de juillet vers la droite : **deux colonnes `NbjCPN-1`** (une ajoutée jadis via « Ajouter un profil » dans les EV — la voie dont la fiche dit que l'import ne fonctionne pas — plus la colonne pérenne PCCN01) ; sinon profil compté deux fois (remonter à l'assistance).
-
-**Checks complémentaires :**
-- Popup « Compteurs CP » + « Solde de repos » (juillet) : décomposition de l'acquis N-1 — le +3 apparaît-il en double (« Jours acquis N-1 » + « Jours acquis N-1 Report ») ? Provision N-1 gonflée de 2 × 3 j ?
-- Fiche société (point ouvert) : **report auto du solde à la clôture** — un report des 3 j non consommés de l'ancien N-1 au 31/05 expliquerait aussi +3, et changerait **tout le chiffrage de masse** (les salariés n'auraient alors rien perdu). Contre-indice : juin observé = 29/3/26 sans report.
-- **Ligne `B01 Commissions` 3.00** : coïncidence suspecte avec la valeur importée → vérifier la provenance (colonne EV Commissions ? code EV du CSV apparié à deux colonnes ?). Si l'import alimente B01, il y a un **impact en euros dans le brut** — bloquant absolu pour la masse. Si ce sont de vraies commissions de 3.00 €, lever le doute et tracer.
-
-### ✔ Cause identifiée (2026-07-07) — code du profil `MAJCPN-1` (OBSERVÉ, déposé dans `sources/raw/2026-07-07_STD_MAJCPN-1_code-profil.txt`)
-
-```silae
-NB = saisie("NbjCPN-1",0)
-Prov = BUL.CpProvAcquiseRef - Bul.CpProvAcquiseRefParReport
-Nbcp = BUL.CPNBJACQUISREF - Bul.CpNbjAcquisRefParRepport
-...
-//Call AffecteCPAcquisRef ( Nb )
-Call AffecteCPAcquisRef ( Nb + Bul.CPReportJours )   //Ni 05032026 #137665 - Tenir compte des CP acquis par report lors de l'ajout sur mois suivant mois de cloture
-call AjouteProvCpRef  (Nb * (Prov / Nbcp))
-```
-
-- Le profil **force** (`Affecte`, pas `Ajoute`) le champ Élém. calculés « Acquis / Période de référence » du bulletin à **`NB + Bul.CPReportJours`** — correctif éditeur **#137665 du 05/03/2026**.
-- **DÉDUIT (arithmétique)** : 35 = 29 + 3 (NB) + 3 → **`Bul.CPReportJours` = 3** pour le salarié test, soit **exactement son solde ancien N-1 au 31/05**. Le dossier **reporte donc le solde non consommé à la clôture** (`SAL_ClotureCPReport` / option société — le point ouvert « report auto » est en réalité ACTIF, au moins pour lui).
-- **Conséquence majeure (À CONFIRMER en priorité)** : si le report est natif, le compteur **s'auto-corrige à partir de juillet sans aucun import** (juillet natif attendu : 29+3 report / 3 / **29** = la cible). L'import des 86 serait alors **inutile et sur-créditerait tout le monde** de la valeur importée — exactement ce qu'on observe sur le test. Et les **3 corrigés manuels (10/8/1 j)** seraient à re-contrôler : leur correction de juin + le report de juillet = **sur-crédit du même montant**.
-
-**Checks de confirmation (rapides) :**
-1. **Salarié témoin NON importé**, bulletin de juillet en brouillon : bandeau CP N-1 attendu `(acquis+report)/pris/solde-cible` (ex. 32/3/29) et Élém. calculés « Acquis / réf » montrant le report → confirme l'auto-correction.
-2. **Salarié test** : Élém. calculés juillet « Acquis / réf » attendu **6.0000** (= Affecte 3+3) → confirme la lecture du code.
-3. Les **3 corrigés manuels** : bandeau juillet — si solde > cible du montant corrigé, le report double leur correction de juin.
-4. `B01 Commissions 3.00` : **non expliqué par ce code** (le profil ne génère aucune ligne) → vérification distincte maintenue.
-
-**Si confirmé** : annuler la saisie importée du salarié test (Saisie des EV juillet → **Réinitialiser les saisies** → F5), **abandonner l'import de masse**, laisser le report de clôture faire la correction des compteurs, re-contrôler l'EH sur juillet, et re-chiffrer le seul sujet restant : l'écart d'**ICP** (10ème nouvelle vs ancienne période) payé en juin, qui n'est pas corrigé par le report.
-
-**Décision : import complet (86 lignes) SUSPENDU** tant que l'excédent +3 et la ligne B01 ne sont pas expliqués. La mécanique d'import elle-même est validée (colonne pérenne + CSV + « OUI » fonctionnent).
-**Correction selon cause** : résidu EV sur juin → effacer la saisie de juin (modif compteur sans impact DSN, mais bulletin de juin réédité — mois payé/DSN transmise, décision à tracer) ; doublement structurel du profil → abandonner la voie A, basculer voie B (Élém. calculés) ou voie C (ticket éditeur).
-**Rappel** : même corrigée, la voie A affichera 32/3/29 (trade-off assumé) — l'affichage exact 29/0/29 n'existe qu'en voie B/C.
-
-## Correctif V2 retenu (2026-07-07) — profil `REGULCPN1` (retrait du pris + provision consommée)
-
-> **⚠ RÉVISÉ le 2026-07-07 (même jour, écrans de mai)** : la V2 est finalement **INUTILE et écartée** — voir la section « Décision finale : V1.1 seule » plus bas. Conclusion conservée ici pour traçabilité (§7 AGENTS.md).
-
-**Lecture du solde de repos (OBSERVÉ, salarié test)** : 07/2026 `JP N-1 = -3.0000` (correction V1, tracée) · 06/2026 `JA N-1 Rep = +3.0000` (report — le « +3 » d'acquis), `JP +3`, `PC +1 212,43` (provision consommée de l'imputation fautive) · mai : `Anc = 4.0`, `Delta = 0.0268` (epsilon de clôture). **Taux moteur confirmé : Provision journalière = PA ÷ JA report inclus** (12 932,58 / 32 = **404,14**).
-**Verdict** : `AjouteCPPrisRef` ne touche que les jours — `PC N-1` reste chargée (3 × 404,14) → **V2 obligatoire** pour re-créditer la provision consommée.
-
-**Code V2 (remplace `REGULCPN1`) :**
+**Profil V1.1** (mis à jour 2026-07-07 après dump technique — `AjouteCPPrisRef` confirmé = cible période de référence explicite) :
 
 ```silae
 Begin
-// BB le 07/07/2026 : Régul CP pris mai saisis sur juin - retire x jours du pris N-1 + provision consommée
+// BB le 07/07/2026 : Régul CP pris mai saisis sur juin (clôture 31/05) - retire x jours du pris N-1
 x = Saisie("CP.RegulPris",0)
 If x <> 0.0 Then
+	Prov = Bul.CpProvAcquiseRef - Bul.CpProvAcquiseRefParReport
+	Nbcp = Bul.CpNbjAcquisRef - Bul.CpNbjAcquisRefParRepport
 	Tx = 0
-	If Bul.CpNbjAcquisRef <> 0 Then Tx = Bul.CpProvAcquiseRef / Bul.CpNbjAcquisRef
-	If Bul.Fonction = Fonction.CALCULNORMAL Then
-		x = Min(x, Bul.CpNbjPrisRef)
-		Call AjouteCPPris2 ( -x, -(x * Tx) )
+	If Nbcp <> 0 Then Tx = Prov / Nbcp
+	If Bul.Fonction = Fonction.CALCULNORMAL Then      // garde anti-doublement (19 passes de calcul)
+		x = Min(x, Bul.CpNbjPrisRef)                  // borne : jamais de pris négatif
+		Call AjouteCPPrisRef ( -x )                   // décrémente le PRIS période de référence (N-1)
+		// V2 si la provision consommée ne suit pas au test :
+		//Call AjouteCPPris2 ( -x, -(x * Tx) )
 	EndIf
 EndIf
 End
 ```
 
-(Réf. doc éditeur : « `AjouteCPPris2` mouvemente CP Pris **et** la provision ; `AjouteCPPris` que les CP Pris ».)
+**Protocole de test (copie de dossier, salarié test 3 j)** : ① sauvegarde du profil (valide l'existence des fonctions) ; ② saisie 3 → calcul → compteur attendu **29/0/29** (vérifier que c'est bien le pris **N-1/Ref** qui bouge, pas le N) ; ③ **F5 ×2** → compteur stable (idempotence) ; ④ solde de repos : provision consommée — si elle ne se recale pas, V2 avec `AjouteCPPris2(-x, -(x×Tx))` ; ⑤ brut strictement inchangé (aucune ligne générée). Puis 1 salarié divergent (pris 11≠4) : cible 7. Ensuite import de masse (fichier à régénérer : Code `EV-CP.RegulPris`, mêmes 86 lignes, valeurs positives).
 
-**Ordre opératoire (salarié test)** : ① purge du report : `MAJCPN-1` avec `NbjCPN-1 = -3`, F5 → cible **JA N-1 = 29** au solde de repos, puis retrait définitif de MAJCPN-1 du PCCN01 ; ② test de réversibilité (vider `CP.RegulPris`, F5 → pris doit revenir à 3) ; ③ V2 + `CP.RegulPris = 3`, F5 → cible **29/0/29** + `PC N-1` re-créditée (1 212,43 → 0), PA intacte — fallback si dérive : `AjouteCPPrisRef(-x)` + profil standard `PROVCONSN1` ; ④ F5 ×2 → stabilité. Quatre feux verts → fichier d'import des 86 (`EV-CP.RegulPris`).
+**Lecture du Solde de repos post-V1.1 (détail « Utilisation des CP », salarié test)** — colonnes JA/JP/SJ/PA/PC × N-1/N :
+- Construction du 29 confirmée : solde initial 14.56 + 2.08×5 (janv-mai) + **4.0 ancienneté (col. Anc, mai)** + **0.0268 (col. Delta = epsilon de clôture)**.
+- 06/2026 : `JA N-1 Rep +3.0000` (**report fantôme MAJCPN-1, colonne Rep**) · `JP N-1 +3.0000` (imputation fautive d'origine) · `PC N-1 +1 212.43` (= 3 × 404.14).
+- 07/2026 : **`JP N-1 -3.0000` = notre `AjouteCPPrisRef(-3)` — visible et traçable dans l'historique** ✔.
+- Solde final : JA 32 (29+3 rep) / JP 0 ✔ / SJ 32 · **PC N-1 = 1 212.43 INCHANGÉE → la provision consommée n'est PAS re-créditée par AjouteCPPrisRef → V2 NÉCESSAIRE.**
+- **Taux moteur identifié** : « Provision Journalière » = PA/JA **report inclus** (12 932.58/32 = 404.14) → la formule Tx de la V2 doit être `Bul.CpProvAcquiseRef / Bul.CpNbjAcquisRef` (sans exclure le report — correction vs V1.1 qui copiait la formule « hors report » de MAJCPN-1, adaptée au report, pas à la conso).
+**V2 (à tester)** : remplacer l'appel par **`Call AjouteCPPris2(-x, -(x*Tx))`** — le dump GDLP documente : « AjouteCPPris2 mouvemente CP Pris **et** la provision ; AjouteCPPris mouvemente que les CP Pris ». Vérifs au test : période visée (JP **N-1**), pas de double retrait de jours, PC re-créditée de 3×404.14. Fallback V2b si KO : `AjouteCPPrisRef(-x)` + profil standard `PROVCONSN1` pour la provision. Préalable : **purge du report fantôme** (MAJCPN-1 avec saisie **-3** → `Affecte(-3+3)=0`) et test de **réversibilité** (retirer la saisie → F5 → le pris doit revenir à 3 = compteur reconstruit à chaque calcul).
 
-### Test V1.1 du 2026-07-07 (copie de dossier, salarié test) — cœur validé, artefact résiduel
+**REVIREMENT V2 → V1.1 (2026-07-08, preuve par les soldes de repos de MAI)** : les écrans de mai démontrent que **la provision du solde de repos = SOLDE DE JOURS × taux journalier courant** (ou × maintien journalier si supérieur), PAS « PA − PC » :
+- Mai, N-1 : solde 3 j × 274.93 (=PA 8 248.04/JA 30) = **824.79** affiché ✔ (alors que PA−PC = 8 248.04−8 907.86 = −659.82) ; synthétique 875.88 = 3 × 291.96 (maintien > 10ème) ✔.
+- Juillet, N-1 : 32 × 404.14 = **12 932.58** affiché ✔.
+→ **Dès que le solde de JOURS est corrigé, la provision comptable est juste par construction : la V1.1 (jours seuls) SUFFIT.** La PC est une colonne d'historique interne, non transférée en compta.
+→ De plus, un re-crédit PC en masse serait **valorisé au taux de juillet** alors que le débit l'a été au taux de juin → PC résiduelles fausses voire **négatives** (ex. test : débit 3×404.14=1 212.43, re-crédit post-purge 3×417.51=1 252.53 → PC −40.10). **Décision : V1.1 en masse ; V2 abandonnée** (PROVCONSN1 en réserve si un contrôle interne exigeait PC=0).
+- Bonus lecture mai : ancienne période 2024-25 du salarié test = **30 acquis (25+4 anc+1 fractionnement, col. Frac)/27 pris/solde 3** → les 3 j de mai la soldaient à 30/30 ✔ (diagnostic bouclé) ; taux journalier moteur confirmé = PA/JA sur deux instantanés (274.93 mai, 404.14 juillet).
+- **Fichier d'import final généré** : `Downloads\import_REGULCPN1_complet.csv` (86 lignes, 508 j, code `EV-CP.RegulPris`).
 
-La version **V1.1** (`AjouteCPPrisRef(-x)` seul, V2 `AjouteCPPris2` en commentaire) a été testée d'abord. Le dump technique (`REF_Langage_Silae_Syntaxes_et_variables.txt`) documente `AjouteCPPrisRef` (pris **période de référence** explicitement) et la liste des passes de calcul (`CALCULNORMAL`, `CALCULPRIMES`, `CALCULVIRTUELBRUT`, `DETERMINEPRIMESMAJORATIONHEURESSUP`, …) — le garde `Fonction.CALCULNORMAL` est la protection contre l'exécution multi-passes.
+**Validation finale salarié test (2026-07-08)** : saisies `CP.RegulPris = 3` **+** `NbjCPN-1 = -3` (purge fantôme) → **compteur 29/0/29 ✔**, brut intact ✔, traçabilité parfaite (juin figé : Rep +3/JP +3/PC +1 212.43 ; juillet : Rep **-3**/JP **-3**). Confirmations : ① `REGULCPN1` ne touche pas la PA (le mouvement PA de juillet vient de MAJCPN-1) ; ② la ligne PA 07/2026 = **-1 252.53** = `AjouteProvCpRef(-3 × 417.51)` de MAJCPN-1(-3) → **résidu de labo chez le salarié test : PA sous-évaluée de 427.73 €** (+824.80 posé au taux de juin − 1 252.53 retiré au taux de juillet) — correctif optionnel : profil standard `PROVCPN-1` (+427.73, saisie unique), sinon documenter.
+**⚠ DANGER identifié** : la saisie `NbjCPN-1 = -3` laissée en place = **bombe au recalcul** — au prochain F5, `Affecte(-3 + report 0) = -3` → JA 26 et PA −1 252.53 **à chaque calcul**. → **Vider la saisie NbjCPN-1 + retirer MAJCPN-1 du PCCN01 AVANT tout F5.** (Énième preuve de la non-idempotence de MAJCPN-1 standard.)
+**Réponse à la question « 2 colonnes par salarié ? » : NON — les 86 de prod n'ont jamais eu MAJCPN-1 (pas de report fantôme) → une seule colonne `CP.RegulPris` (le fichier d'import est bon tel quel).**
 
-**Résultats (OBSERVÉ)** : colonne `CP.RegulPris` créée via `REGULCPN1` ajouté au conteneur `PCCN01` ✔ · saisie 3 → **Pris N-1 : 3 → 0** ✔ · aucune ligne bulletin ✔ · brut strictement intact (6 326,67) ✔ · CP N / RTT intouchés ✔.
-→ **Point de vigilance n°1 (Min) levé par l'observation** : le retrait a bien opéré sur juillet, donc `Bul.CpNbjPrisRef` se lit en cumul de la période de référence, pas champ du seul bulletin courant.
+**Résultat test V1.1 (2026-07-07, salarié test, dossier prod/juillet non validé)** : profil `REGULCPN1` créé + branché PCCN01, colonne `CP.RegulPris` = 3 → calcul → **pris N-1 : 3 → 0 ✔ · aucune ligne générée ✔ · brut intact (6 326,67) ✔ → `AjouteCPPrisRef` VALIDÉ.** ⚠ Compteur = **32/0/32** au lieu de 29/0/29 : **+3 d'acquis = report fantôme résiduel des tests `MAJCPN-1`** sur ce même salarié — **l'écriture `AffecteCPAcquisRef` persiste au compteur même après retrait de la saisie et du profil** (leçon durable : les écritures de report survivent aux recalculs ; les 86 salariés de prod ne sont pas concernés, MAJCPN-1 n'a jamais tourné sur eux). Purge : re-brancher MAJCPN-1 temporairement et saisir **-3** (`AffecteCPAcquisRef(-3 + report 3) = 0`) — à vérifier au solde de repos (ligne « Jours acquis N-1 Report »). Restent : purge → 29/0/29, F5 ×2, solde de repos/provision conso.
 
-**Compteur = 32/0/32** au lieu de 29/0/29 : le +3 d'acquis est un **résidu des essais MAJCPN-1 sur ce même salarié** (l'écriture de report `AffecteCPAcquisRef` persiste après retrait de la saisie et du profil — les écritures de report **survivent aux recalculs**). Preuve attendue au solde de repos : « Jours acquis N-1 Report : 3 ». Purge : re-brancher `MAJCPN-1`, `NbjCPN-1 = -3`, recalcul (`Affecte(-3 + report 3) = 0`), puis retrait définitif du PCCN01.
-**Conséquence** : les **86 de prod ne sont pas concernés** par ce résidu (import complet jamais lancé ; les 3 corrections manuelles étaient en Éléments calculés) → **point n°2 quasi levé** ; le contrôle d'un témoin non importé reste une assurance à 2 minutes avant l'émission du fichier.
-**Deux explications concurrentes du « +6 » initial restent en lice** (À CONFIRMER, tranchées par la purge) : (a) exécution multi-passes du MAJCPN-1 standard, qui n'a **pas** de garde `Fonction.CALCULNORMAL` ; (b) `Bul.CPReportJours` = 3 porté par les données du salarié (report de clôture). Le résultat de la purge et le témoin diront laquelle tient.
+## Vérification croisée du dépôt (2026-07-08, sur écrans juillet + juin + mai — assistant)
 
-**Choix d'objet (capitalisé)** : correction en **profil de prime** (pas en fonction calcul) — seule voie ouvrant une colonne EV importable en masse ; exécution par salarié dans la chaîne des primes ; conforme au choix éditeur (MAJCPN-1 est un profil). Branchement via le conteneur `PCCN01` existant (PCCN02 possible pour isoler, mais non éprouvé sur ce dossier — prod sur PCCN01). Après campagne : retirer du PCCN01 les onglets `REGULCPN1` et `MAJCPN-1`.
+**Conformes (OBSERVÉ, recalculé indépendamment) :**
+- Bulletin juillet : **CP N-1 = 29/0/29** ✔ · **Brut = 6 326,67 = SdB strictement** ✔ · **aucune ligne B01** ✔ (anomalie prime résiduelle soldée) · CP N 4.17/0/4.17 ✔ · RTT 9/2/7 ✔.
+- Solde de repos, cohérence arithmétique complète : JA N-1 = 14.56 + 2.08 + 3×2.0833 + 6.1101 (mai : 2.0833+4 anc+0.0268 delta) = 29.0000 puis +3−3 ✔ · JP 3−3 = 0 ✔ · PA = 12 107.78 (propre) + 824.80 − 1 252.53 = 11 680.05 ✔.
+- **Règle de valorisation triple-confirmée** (3 instantanés) : Solde de Provision = solde de jours × Provision Journalière (= PA/JA) — mai : 3 × 274.93 = 824.79 ✔ · juin : 29 × 404.14 = **11 720.06** ✔ · juillet : 29 × 402.76 = 11 680.05 ✔.
+- **Résidu PA −427.73 € confirmé par l'écran** : PA propre attendue 12 107.78 vs 11 680.05 (écart = +824.80 posé au taux 274.93 − 1 252.53 retiré au taux 417.51). Salarié test uniquement ; correctif optionnel `PROVCPN-1` +427.73, sinon documenter.
+- « Une seule colonne pour les 86 » ✔ ; bonus : le salarié test présent dans le fichier est inoffensif (`Min(3, pris 0) = 0` → no-op).
 
-### ⚠ Points de vigilance relevés avant l'import de masse (revue du 2026-07-07)
+**Non conformes / à faire immédiatement :**
+1. ⚠ **CONFIRMÉ À L'ÉCRAN EV (juillet)** : la saisie **`NbjCPN-1 = −3.00` est toujours en place** et la colonne existe toujours (MAJCPN-1 toujours branché au PCCN01) → **bombe au recalcul armée**. Vider la saisie + retirer MAJCPN-1 du PCCN01 **avant tout F5 / calcul de masse**.
+2. Après purge : **re-contrôler 29/0/29 par un F5** — la persistance des écritures de report joue dans les deux sens (le +3 avait survécu au retrait de sa saisie ; vérifier que le −3 tient aussi). Si le compteur revient à 32/0/32, re-poser la purge autrement avant l'import.
+3. Trace à documenter : les écritures de labo sont datées **06/2026** (Rep +3, PA +824.80, PC +1 212.43), mois payé/DSN transmise — sans impact DSN (compteurs internes) mais l'historique du mois validé porte ces traces ; à mentionner dans la note de synthèse.
 
-1. **`Min(x, Bul.CpNbjPrisRef)`** : si `Bul.CpNbjPrisRef` est un champ **du bulletin courant** (juillet = 0, le pris étant enregistré sur juin — même sémantique que `BUL_CPJoursPrisRef` en EH), le Min écrase x à 0 et **la V2 ne fait rien** alors que la V1 fonctionnait. Symptôme au test ③ : aucun `JP -3` au solde de repos. Correctif : retirer le Min (les valeurs des 86 sont déjà validées par l'EH + lignes de bulletins) ou le baser sur le cumul. À CONFIRMER au test ③ avant toute généralisation.
-2. **Salarié témoin avant d'émettre le fichier** : contrôler au solde de repos d'un **non-importé** (brouillon juillet) s'il porte lui aussi une ligne `Rep +N` native. Si oui (report de clôture natif pour tous) : la seule régul du pris amènerait les 85 à `(29+N)/0/(29+N)` — il faudrait alors **deux colonnes** par salarié (purge report `NbjCPN-1 = -N` + `CP.RegulPris = N`). Si non : plan actuel OK.
-3. **Les 3 corrigés manuels (10/8/1 j)** : pris déjà à 0 — si le report natif existe pour eux, leur besoin est **la purge seule** (pas de CP.RegulPris), sinon rien. À trancher avec le même contrôle qu'au point 2.
-4. Rappel prérequis import : la colonne `CP.RegulPris` doit être **pérenne** (profil de prime utilisateur type PCCN01), pas ajoutée via « Ajouter un profil » dans les EV.
-5. Au test ① : selon que `Bul.CPReportJours` est porté par juin ou juillet, la purge peut se matérialiser soit par la disparition de la ligne `Rep`, soit par une ligne `-3` compensatrice sur juillet — le critère de réussite est **JA N-1 = 29 en net**, pas la forme de l'affichage.
-
-## Décision finale (2026-07-07) — V1.1 seule, V2 écartée (preuve chiffrée)
-
-**Écrans de mai (OBSERVÉ, salarié test)** — deux enseignements :
-
-1. **Validation chiffrée finale du diagnostic initial** : ancienne période 2024-25 = **30 acquis** (25 + 4 ancienneté + **1 fractionnement** — colonne Frac découverte chez lui) / 27 pris / solde 3. Les 3 j pris 11-13/05 la soldaient à 30/30, au jour près.
-2. **Mécanisme de valorisation de la provision (OBSERVÉ)** : `Solde de Provision = solde de JOURS × taux journalier courant` (ou × maintien journalier si plus favorable) — **pas** « provision acquise − provision consommée » :
-   - Mai N-1 : 3 j × 274,93 = **824,79** affiché ✔ (PA−PC donnerait −659,82) ; vue synthétique 875,88 = 3 × 291,96 (maintien > 10ème) ✔
-   - Juillet N-1 : 32 j × 404,14 = **12 932,58** affiché ✔
-
-**Conséquences :**
-- Dès que le **solde de jours** est corrigé, la provision comptable est juste automatiquement. La « provision consommée » restée chargée est une **colonne d'historique interne** — elle ne part pas en compta.
-- Argument supplémentaire contre la V2 en masse : le re-crédit se ferait au **taux de juillet** alors que le débit a eu lieu au **taux de juin** → provisions consommées résiduelles fausses, voire négatives (salarié test : **−40,10 €**). Inacceptable sur 86 salariés.
-
-**Décision : `REGULCPN1` reste en V1.1** (`AjouteCPPrisRef(-x)` seul). Si passé en V2 : revenir à la V1.1.
-
-### Plan final (3 gestes)
-
-1. **Purge du report fantôme** (salarié test uniquement) : `MAJCPN-1` rebranché 5 min, `NbjCPN-1 = -3`, F5 → **29/0/29** → retirer MAJCPN-1 du PCCN01.
-2. **F5 ×2** → compteur figé (la borne `Min` neutralise le profil : pris déjà 0 → retrait 0).
-3. **Import de masse** : `import_REGULCPN1_complet.csv` (86 lignes, 508 jours, code `EV-CP.RegulPris` — PII, hors base) → `Traitement mois > Import de données variables` → `IMPORTSILAE` → calcul des bulletins de juillet.
-
-**Contrôle final** : EH « Contrôle compteurs CP clôture » **sans filtre** sur juillet → solde N-1 = acquis partout (29/29 ; 27/27 pour le cas à 27) ; les 3 « oranges » vérifiés individuellement ; puis **nettoyage** (retirer `REGULCPN1` et `MAJCPN-1` du PCCN01). Clôture de la fiche sur l'EH post-import + note de synthèse client (préventif mai 2027 : CP de mai saisis sur mai, ou méthode 147 re-testée à froid).
+**GO import des 86** conditionné à : purge faite + F5 stable à 29/0/29 + EV de juillet du salarié test propre (seul `CP.RegulPris` restant, ou rien).
 
 ## Points ouverts
 - Réglage fiche société : report auto du solde, mois de clôture, option décalage (non visibles dans la vidéo).
@@ -268,7 +215,6 @@ Exemple (salarié test 2, cadre B065, forfait 218 j, anonymisé — bulletins ho
 | Date | Changement | Raison | Auteur |
 |---|---|---|---|
 | 2026-07-07 | Dépôt initial dans `knowledge/cases/` (statut DIAGNOSTIC) | Capitalisation §7 AGENTS.md | Assistant (session Claude) |
-| 2026-07-07 | Ajout section « Test import IMPORTSILAE + MAJCPN-1 » : résultat non conforme (35/3/32 au lieu de 32/3/29, +3 j en trop), import de masse suspendu, checklist de discrimination | Résultat de test observé (captures Blandine) | Assistant (session Claude) |
-| 2026-07-07 | **Cause identifiée** : code MAJCPN-1 observé — `AffecteCPAcquisRef(Nb + Bul.CPReportJours)` (#137665) → CPReportJours=3 déduit → report de clôture actif, auto-correction probable en juillet, import de masse remis en cause | Code du profil transmis par Blandine | Assistant (session Claude) |
-| 2026-07-07 | **Changement de voie** : abandon MAJCPN-1, profil custom `REGULCPN1` (V1.1 `AjouteCPPrisRef`, V2 `AjouteCPPris2` si PC ne suit pas) + test V1.1 validé (pris 3→0, brut intact), artefact 32/0/32 = résidu report MAJCPN-1 à purger ; lecture solde de repos ; points de vigilance pré-import | Tests Blandine + dump technique | Assistant (session Claude) |
-| 2026-07-07 | **V2 écartée** (provision = solde jours × taux courant, PC = historique interne ; re-crédit au taux de juillet ⇒ résidus faux, ex. −40,10 €) → **décision finale V1.1 seule** + plan final 3 gestes (purge, F5×2, import 86) et contrôle EH sans filtre | Écrans de mai (Blandine) | Assistant (session Claude) |
+| 2026-07-07 | Test import MAJCPN-1 non conforme (35/3/32), cause identifiée dans le code du profil, bascule `REGULCPN1` V1.1/V2, lecture solde de repos, V2 écartée sur preuve chiffrée | Sessions de test Blandine | Assistant (session Claude) |
+| 2026-07-08 | **Alignement complet sur la fiche maître locale** (version consolidée : B01 expliqué = prime résiduelle du PCCN01, re-test 32/3/29, solution finale `CP.REGULPRIS`, revirement V2→V1.1, validation finale 29/0/29, danger saisie `NbjCPN-1 = -3`) — structure antérieure du dépôt conservée dans l'historique git | Fiche maître transmise par Blandine (« / vérifie / ») | Assistant (session Claude) |
+| 2026-07-08 | Vérification croisée écrans juillet/mai : 29/0/29 ✔, brut 6 326.67 strict ✔, B01 absent ✔, arithmétique PA (−427.73) confirmée ✔ ; ⚠ saisies `NbjCPN-1 = -3` et colonne MAJCPN-1 **encore en place à l'écran EV** → purge avant tout F5 | Vérification demandée par Blandine | Assistant (session Claude) |
