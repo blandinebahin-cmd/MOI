@@ -1,4 +1,4 @@
-> **Note de dépôt** — Fiche alignée le 2026-07-08 sur la version maître consolidée de Blandine (fichier local `2026-07-06_B065_CP-CLOTURE_cp-pris-mai-saisis-juin.md`), contenu conservé intact. Les versions antérieures de la fiche (structure de ce dépôt) restent consultables dans l'historique git. Statut : **correction VALIDÉE sur salarié test (29/0/29, brut intact) — import de masse imminent**.
+> **Note de dépôt** — Fiche alignée le 2026-07-08 sur la version maître consolidée de Blandine (fichier local `2026-07-06_B065_CP-CLOTURE_cp-pris-mai-saisis-juin.md`), contenu conservé intact. Les versions antérieures de la fiche (structure de ce dépôt) restent consultables dans l'historique git. Statut : **CORRECTION DE MASSE TERMINÉE ET CONTRÔLÉE (2026-07-08)** — 100 % du dossier propre (BARRAL inclus), en attente de la validation de la paie de juillet avant nettoyage (août). Restes documentés : résidu PA BERARD (−427,73 €), écart ICP de juin (décision client), JORION RTT (préexistant probable), méthode 147 active (re-test à froid avant 05/2027 + validation client du report).
 > Sources brutes (vidéos, captures, exports CSV/XLSX) volontairement **hors base** : données nominatives (§4.4), conservées dans `Downloads\` côté poste de travail. Documents référencés : `SILAE_METHODES_CP.md` (emplacement réservé), [`../SILAE_COMPTEURS_GESTION_MANUELLE.md`](../SILAE_COMPTEURS_GESTION_MANUELLE.md), [`../PATRONS_PROFILS_PRIMES_ET_FC.md`](../PATRONS_PROFILS_PRIMES_ET_FC.md), [`../../sources/raw/REF_Langage_Silae_Syntaxes_et_variables.txt`](../../sources/raw/REF_Langage_Silae_Syntaxes_et_variables.txt).
 
 ---
@@ -221,6 +221,13 @@ Après l'étape A (saisie `NbjCPN-1` vidée ✔, MAJCPN-1 remplacé par REGULCPN
 4. Vérification **méthode 147 = 0** au dossier : toujours en attente.
 
 **Rappel de fin de campagne** : ne rien retirer (profils REGULCPN1 + MAJCPN-1, saisies positives et négatives) avant la **validation de juillet** ; nettoyage du PCCN01 en août ; fichier `import_MAJCPN1_complet.csv` (ancienne voie) archivé/détruit pour éviter tout import accidentel.
+
+## 🏁 Campagne terminée (2026-07-08) — BARRAL corrigé, décisions de clôture
+
+- **BARRAL : 29/0/29** ✔ (contre-poids `NbjCPN-1 = −2,50` posé), brut 12 567,05 = SdB strictement ✔. **La correction est complète sur 100 % du dossier** : acquis propres partout, pris résiduels = les 21,5 j anticipés légitimes uniquement.
+- **Décision Blandine : méthode 147 laissée ACTIVE pour la clôture 2027** (objectif : conserver la pratique du décalage sans reproduire l'incident). ⚠ Réserves tracées : (a) le test du 06/07 était **non concluant** (CP retiré de juin au lieu d'être conservé, +2,5 j de report inexpliqué à l'époque — élucidé depuis : 147 **reporte le solde non consommé** de l'ancien N-1) ; (b) conséquence structurante : à la clôture 05/2027, **tous les soldes non consommés seraient reportés** sur le nouveau N-1 — fin du « perdu au 31/05 », impact provision → **règle de gestion à faire valider par le client** ; (c) **re-test à froid obligatoire sur copie avant mai 2027** (imputation des CP de mai saisis en juin, valorisation 10ème ancienne période, comportement du report) ; (d) surveiller tout recalcul de bulletins proches de la clôture tant que 147=1 (le brouillon 147 de BARRAL a montré qu'un recalcul de juin ré-arbitre les CP).
+- **CHAY : congé parental** → colonnes CP N vides normales (suspension d'acquisition). Clos.
+- **JORION (RTT −1)** : ne provient pas de l'import (le profil ne touche que le pris CP N-1 — confirmé par le code) ; sa ligne RTT paraissait déjà anormale sur la vue de **mai** → **préexistant probable**, à confirmer en régénérant l'édition sur juin ; vérifier fiche emploi (type d'acquisition RTT) + absences RTT saisies.
 
 ## Runbook d'exécution final (2026-07-08, profil nettoyé)
 
