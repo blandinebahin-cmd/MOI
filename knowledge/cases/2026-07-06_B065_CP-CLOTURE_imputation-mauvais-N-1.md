@@ -207,6 +207,21 @@ Après l'étape A (saisie `NbjCPN-1` vidée ✔, MAJCPN-1 remplacé par REGULCPN
 - **BARRAL absent de la checklist** ✔ cohérent (son pris de juin a été effacé par le test 147) → il n'est **pas** couvert par l'import : traitement unitaire requis = contre-poids **`NbjCPN-1 = −2,50`** sur juillet (son pris à 0 est, lui, correct : son CP du 15/05 relevait de l'ancienne période). + Vérifier **méthode 147 = 0** au dossier.
 - ⚠ La checklist reste le **référentiel des valeurs**, mais son mode opératoire (« Éléments calculés juin → 0 ») est **obsolète** — remplacé par l'import `CP.RegulPris` sur juillet. Les cibles du contrôle D : solde = acquis − anticipés de mai (et non uniformément 29/0/29), acquis contrôlé en valeur (29/27/30…).
 
+## ✅ IMPORT DE MASSE EXÉCUTÉ ET CONTRÔLÉ (2026-07-08) — Solde des repos juillet, dossier complet
+
+**Résultat (OBSERVÉ, édition détaillée Solde des repos juillet 2026) :**
+- **Totaux carrés au dixième** : N-1 = acquis 3 053,50 / pris **21,50** / solde 3 032,00. Le pris résiduel de 21,50 j = **exactement la somme des prises anticipées légitimes de mai** (BAK 2 + DELEUZE 0,5 + GIOVANNACCI 7 + HOGUIN 2 + MAYZEL 2 + RUPPE 2 + TISSANDIER 4 + TREMBLAY 2 = 21,5) → l'import a retiré les 508 j fautifs et **rien d'autre**.
+- Cibles nominales atteintes : 29/0/29 en masse ; variantes correctes (RIPOTEAU 28, SMATT PINELLI 27, KODO 9 entrante) ; les 4 cas à anticipés conservés = cibles exactes (GIOVANNACCI 29/7/22, RUPPE 29/2/27, TISSANDIER 29/4/25, BAK 29/2/27 — détail BAK vérifié au solde de repos : JP 2 daté 05/2026 ✔).
+- BERARD 29/0/29 ✔ (provision N-1 11 680,05 = résidu −427,73 € connu et documenté).
+
+**Écarts restants (attendus ou hors périmètre CP) :**
+1. **BARRAL 31,50/0/31,50** — contre-poids `NbjCPN-1 = −2,50` **pas encore posé** → dernière action de la campagne.
+2. JORION : **RTT solde −1** (pris 1, acquis vide) — anomalie hors CP, à inspecter (préexistante ?).
+3. CHAY : colonnes CP N vides (sortie/STC probable ce mois) — à vérifier au moment de son STC.
+4. Vérification **méthode 147 = 0** au dossier : toujours en attente.
+
+**Rappel de fin de campagne** : ne rien retirer (profils REGULCPN1 + MAJCPN-1, saisies positives et négatives) avant la **validation de juillet** ; nettoyage du PCCN01 en août ; fichier `import_MAJCPN1_complet.csv` (ancienne voie) archivé/détruit pour éviter tout import accidentel.
+
 ## Runbook d'exécution final (2026-07-08, profil nettoyé)
 
 Séquence exécutée/à exécuter — détail dans la réponse assistant du 2026-07-08 : **A.** désamorçage (vider `NbjCPN-1`, retirer MAJCPN-1 du PCCN01) → **B.** revalidation salarié test (F5, cible 29/0/29, brut 6 326,67 strict, F5 ×2 figé, solde de repos) → **C.** import `import_REGULCPN1_complet.csv` sur bulles rouges + calcul de juillet → **D.** EH sans filtre sur juillet (pris 0 / solde = acquis partout sauf 2 sorties), 3 oranges en unitaire, 2 témoins, spot-check solde de repos → **E.** ⚠ **REGULCPN1 et les saisies restent en place jusqu'à la validation de juillet** (la correction est recalculée à chaque calcul : retirer le profil ou réinitialiser les EV avant validation = tout annuler) ; nettoyage du PCCN01 en août (saisie non reportée, profil inerte). Rollback à tout moment avant validation : `Réinitialiser les saisies` + recalcul.
