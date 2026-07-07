@@ -242,6 +242,11 @@ Après l'étape A (saisie `NbjCPN-1` vidée ✔, MAJCPN-1 remplacé par REGULCPN
 **Salariés sur-corrigés (liste préliminaire, lue sur les vues de mai — À CONFIRMER par croisement export mai × fichier)** : sur-correction = max(0 ; valeur fichier − solde ancien 31/05) :
 GIOVANNACCI 4 → **0** · RUPPE 1 → **0** · TISSANDIER 8 → **0** · GARBOUJ 2 → **0** · BLANCHARD 3 → **1** · CAUDRON 7 → **6** · COGOLUEGNES 6 → **5** · DE GRIVEL 6 → **5,5** · DERRIENNIC 5,5 → **4,5** · DOWLING 4,5 → **1,5** · FAUCHER 5 → **2** · FLAMENT 7 → **6,5** · FRAN 3 → **2** · GIMADIEV 2 → **1** ≈ **29 j** sur les lignes visibles ; audit exhaustif requis sur tout le fichier.
 
+**Confirmation sur bulletins (OBSERVÉ, 2026-07-08)** — le schéma est validé à l'identique sur les deux autres « oranges » :
+- **TISSANDIER** : mai = ancien N-1 29/29/**0** (9 j d'avril 20-30/04 arbitrés 5 ancien + 4 anticipés → CP N 29/4/25) ; juin = 8 j pris 04-15/05 imputés nouveau N-1 → 29/**12**/17 **correct** (ancien solde 0) ; juillet post-import = 29/4/25 → **sur-corrigé de 8 j**, cible réelle **29/12/17**.
+- **RUPPE** : mai = ancien N-1 30/30/**0** (5 j d'avril arbitrés 3 ancien + 2 anticipés → CP N 29/2/27) ; juillet post-import = 29/**2**/27 → **sur-corrigé de 1 j**, cible réelle **29/3/26**.
+- Les deux bulletins de juillet sont propres côté paie (brut = SdB strictement, aucune ligne générée) — sur-correction purement compteur, comme GIOVANNACCI.
+
 **Protocole de reprise (réversible, bulletins non validés)** : ① export « Ouvrir dans un tableur » du Solde des repos de MAI → colonne solde ancien N-1 ; ② croiser avec le fichier : `nouvelle valeur = min(valeur ; solde mai)` ; ③ corriger les saisies `CP.RegulPris` des seuls salariés touchés (saisie directe ou ré-import — l'import écrase la valeur) ; ④ F5 / recalcul des touchés ; ⑤ re-contrôle : cible pris N-1 = anticipés de mai + (jours juin − plafond), totaux : pris total = 21,5 + Σ surplus.
 
 **Note** : le brut de GIOVANNACCI reste strictement intact (6 240,00) — la sur-correction est purement compteur, aucun impact paie/DSN ; c'est rattrapable proprement tant que juillet n'est pas validé.
